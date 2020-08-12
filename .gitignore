@@ -15,6 +15,9 @@ chrome-profiler-events.json
 speed-measure-plugin.json
 
 # IDEs and editors
+backend/.idea
+backend/var
+backend/vendor
 /.idea
 .project
 .classpath
