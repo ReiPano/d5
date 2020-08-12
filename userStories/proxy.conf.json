@@ -1,0 +1,10 @@
+{
+    "/auth": {
+        "target": "https://localhost:8000",
+        "secure": true
+    },
+    "/auth/login": {
+      "target": "https://localhost:8000",
+      "secure": true
+  }
+}
