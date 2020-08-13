@@ -6,6 +6,8 @@ import { AppComponent } from './app.component';
 import { AuthModule } from './auth/auth.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './shared/shared.module';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import { UserModule } from './user/user.module';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,9 @@ import { SharedModule } from './shared/shared.module';
     AppRoutingModule,
     AuthModule,
     BrowserAnimationsModule,
-    SharedModule
+    SharedModule,
+    MatSidenavModule,
+    UserModule
   ],
   providers: [],
   bootstrap: [AppComponent]

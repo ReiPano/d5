@@ -1,4 +1,16 @@
-<mat-toolbar color="primary" style="margin-bottom: 10px;">
-  <span>User Stories</span>
-</mat-toolbar>
-<router-outlet></router-outlet>
+
+<mat-sidenav-container class="example-container">
+  <mat-sidenav #drawer mode="over" style="width: 300px;" [disableClose]="false">
+    <app-user-sidenav></app-user-sidenav>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary" style="margin-bottom: 10px;">
+      <button mat-icon-button><mat-icon (click)="drawer.toggle()">menu</mat-icon></button>
+      <span>User Stories</span>
+    </mat-toolbar>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+
+

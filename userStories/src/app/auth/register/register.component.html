@@ -1,36 +1,51 @@
-<mat-card style="width: 80%; margin: 20px auto;">
+<mat-card style="width: 80%; max-width: 500px; margin: 20px auto;" *ngIf="registerFormGroup">
   <mat-card-header>
     <mat-card-title>Register a new account</mat-card-title>
   </mat-card-header>
   <mat-divider>
   </mat-divider>
   <mat-card-content style="margin-top: 20px;">
-    <form #registerForm>
+    <form [formGroup]="registerFormGroup" #registerForm>
       <mat-form-field class="full-width">
-        <input matInput placeholder="Username" name="username" [(ngModel)]="username">
+        <input matInput placeholder="Username" name="username" formControlName="username">
+        <mat-error *ngIf="registerFormGroup.get('username').invalid">
+          Enter a username
+        </mat-error>
       </mat-form-field>
       <div class="row">
         <div class="col-md-6 col-sm-12">
           <mat-form-field class="full-width">
-            <input matInput placeholder="Password" type="password" name="password" [(ngModel)]="password">
-            <mat-error *ngIf="!passwordMatch(true)">
+            <input matInput placeholder="Password" type="password" name="password" formControlName="password" (keyup)="validateForm()" (blur)="validateForm()">
+            <mat-error *ngIf="registerFormGroup.get('password').invalid && registerFormGroup.get('password').errors?.passwordNotMatch && registerFormGroup.get('password').touched && registerFormGroup.get('reEnteredPassword').touched">
               Password do not match
+            </mat-error>
+            <mat-error *ngIf="registerFormGroup.get('password').invalid && registerFormGroup.get('password').errors?.required">
+              Password is required
+            </mat-error>
+            <mat-error *ngIf="registerFormGroup.get('password').invalid && registerFormGroup.get('password').errors?.minlength">
+              Password must be at least 6 characters
             </mat-error>
           </mat-form-field>
         </div>
         <div class="col-md-6 col-sm-12">
           <mat-form-field class="full-width">
-            <input matInput placeholder="Re-enter password" type="password" name="reEnteredPassword" [(ngModel)]="reEnteredPassword">
+            <input matInput placeholder="Re-enter password" type="password" name="reEnteredPassword" formControlName="reEnteredPassword" (keyup)="validateForm()" (blur)="validateForm()">
           </mat-form-field>
         </div>
       </div>
       <mat-form-field class="full-width">
-        <input matInput placeholder="Email" type="email" name="email" [(ngModel)]="email">
+        <input matInput placeholder="Email" type="email" name="email" formControlName="email">
+        <mat-error *ngIf="registerFormGroup.get('email').invalid && registerFormGroup.get('email').errors?.required">
+          Email is required
+        </mat-error>
+        <mat-error *ngIf="registerFormGroup.get('email').invalid && registerFormGroup.get('email').errors?.email">
+          Enter a valid email
+        </mat-error>
       </mat-form-field>
     </form>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-raised-button color="primary" (click)="regiserUser()">Register</button>
+    <button mat-raised-button color="primary" [disabled]="registerFormGroup.invalid" (click)="regiserUser()">Register</button>
     <button mat-raised-button (click)="goToLogin()">Cancel</button>
   </mat-card-actions>
 </mat-card>

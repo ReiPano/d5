@@ -8,11 +8,11 @@ import {MatDividerModule} from '@angular/material/divider';
 import {MatInputModule} from '@angular/material/input';
 import {MatIconModule} from '@angular/material/icon';
 import {MatMenuModule} from '@angular/material/menu';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedService } from './shared.service';
 import { HttpClientModule } from '@angular/common/http';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
-
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 @NgModule({
   declarations: [],
@@ -28,8 +28,10 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     MatIconModule,
     MatMenuModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatFormFieldModule
   ],
   exports: [
     MatCardModule,
@@ -41,7 +43,9 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     MatIconModule,
     MatMenuModule,
     FormsModule,
-    MatSnackBarModule
+    ReactiveFormsModule,
+    MatSnackBarModule,
+    MatFormFieldModule
   ]
 })
 export class SharedModule { }
