@@ -1,0 +1,15 @@
+::ng-deep .mat-tab-body.mat-tab-body-active {
+  overflow-y: hidden !important;
+}
+
+::ng-deep .mat-tab-body-content {
+  margin-top: 40px;
+}
+
+::ng-deep .mat-tab-header {
+  position: fixed !important;
+  width: 100%;
+  background: white;
+  padding: 0px;
+  z-index: 2;
+}

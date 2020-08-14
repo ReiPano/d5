@@ -10,7 +10,7 @@ export class SharedService {
 
   constructor(private httpClient: HttpClient) { }
 
-  post(url, data) {
+  public post(url, data) {
     return this.httpClient.post(url, data).pipe(
       map(response => {
           const serviceResponse: ServiceResponse = ServiceResponse.InitResponse();
@@ -21,6 +21,20 @@ export class SharedService {
           }
           return serviceResponse;
       })
-  );
+    );
+  }
+
+  public get(url) {
+    return this.httpClient.get(url).pipe(
+      map(response => {
+          const serviceResponse: ServiceResponse = ServiceResponse.InitResponse();
+          try {
+              Object.assign(serviceResponse, response);
+          } catch (error) {
+              serviceResponse.message = error;
+          }
+          return serviceResponse;
+      })
+    );
   }
 }

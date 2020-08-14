@@ -6,8 +6,11 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
+use App\Service\AuthService;
 use App\Service\SerializerService;
+use App\Service\TokenService;
 use App\ViewModels\ServiceResponse;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,9 +24,10 @@ class AuthController extends AbstractController
      * @Route("/auth/login")
      * @param Request $request
      * @param SerializerService $serializerService
+     * @param TokenService $tokenService
      * @return Response
      */
-    public function login(Request $request, SerializerService $serializerService) {
+    public function login(Request $request, SerializerService $serializerService, TokenService $tokenService) {
         $result = null;
 
         $username = $request->request->get('username');
@@ -35,7 +39,12 @@ class AuthController extends AbstractController
             if (!is_null($user)) {
                 $userPassword = $user->getPassword();
                 if (password_verify($password, $userPassword)) {
-                    $result = new ServiceResponse(true, $user, "Success");
+                    $token = $tokenService->generateToken();
+                    $user->setToken($token);
+                    $user->setDateUpdated(date_create());
+                    $this->getDoctrine()->getManager()->persist($user);
+                    $this->getDoctrine()->getManager()->flush();
+                    $result = new ServiceResponse(true, $token, "Success");
                 }
                 else {
                     $result = new ServiceResponse(false, null, "Error! Password not correct");
@@ -49,6 +58,22 @@ class AuthController extends AbstractController
             $result = new ServiceResponse(false, null, "Error! Username or password not correct");
         }
 
+        $response = new Response();
+        $response->setContent($serializerService->jsonSerialize($result));
+        return $response;
+    }
+
+    /**
+     * @Route("/auth/token-authentication")
+     * @param Request $request
+     * @param SerializerService $serializerService
+     * @param AuthService $authService
+     * @return Response
+     */
+    public function tokenAuthentication(Request $request, SerializerService $serializerService, AuthService $authService) {
+        $username = $request->request->get('username');
+        $token = $request->request->get('token');
+        $result = $authService->authenticateUserByUsernameAndToken($username, $token, $this->getDoctrine());
         $response = new Response();
         $response->setContent($serializerService->jsonSerialize($result));
         return $response;
@@ -87,7 +112,7 @@ class AuthController extends AbstractController
                             $entityManager->persist($user);
                             $entityManager->flush();
                             $result = new ServiceResponse(true, null, "Success");
-                        } catch (\Exception $e) {
+                        } catch (Exception $e) {
                             $result = new ServiceResponse(false, null, "User could not be created");
                         }
                     }
