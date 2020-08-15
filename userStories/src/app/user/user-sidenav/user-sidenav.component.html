@@ -2,20 +2,19 @@
   <div class="user-logo">
     <div class="img" [style.background-image]="profileImg"></div>
     <h3>{{ loggedinUser.username }}</h3>
-    <button mat-raised-button>Dashboard</button>
+    <button mat-raised-button>Profile</button>
   </div>
 </div>
-<button mat-button class="full-width">
-  Home
-</button>
-<!-- <mat-selection-list #shoes>
+<mat-selection-list #shoes [multiple]="false">
   <mat-list-option>
-
+    <mat-icon mat-list-icon>home</mat-icon> Home
   </mat-list-option>
   <mat-list-option>
-    Profile
+    <mat-icon mat-list-icon>add_circle</mat-icon>
+    New post
   </mat-list-option>
-  <mat-list-option>
+  <mat-list-option (click)="logOut()">
+    <mat-icon mat-list-icon>cancel</mat-icon>
     Logout
   </mat-list-option>
-</mat-selection-list> -->
+</mat-selection-list>

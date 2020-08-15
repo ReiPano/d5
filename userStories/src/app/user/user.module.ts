@@ -11,7 +11,8 @@ import { PostFullComponent } from './user-posts/post-full/post-full.component';
 import { UserPostService } from './user-posts/user-post.service';
 import { SharedService } from '../shared/shared.service';
 import {MatListModule} from '@angular/material/list';
-
+import {MatDialogModule} from '@angular/material/dialog';
+import {IvyCarouselModule} from 'angular-responsive-carousel';
 
 @NgModule({
   declarations: [UserSidenavComponent, UserPostsComponent, FormComponent, UserProfileComponent, PostComponent, PostFullComponent],
@@ -19,7 +20,9 @@ import {MatListModule} from '@angular/material/list';
     CommonModule,
     MatTabsModule,
     SharedModule,
-    MatListModule
+    MatListModule,
+    MatDialogModule,
+    IvyCarouselModule
   ],
   providers: [UserPostService, SharedService],
   exports: [UserSidenavComponent, UserPostsComponent, FormComponent, UserProfileComponent]

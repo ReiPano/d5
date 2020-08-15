@@ -14,3 +14,9 @@
   top: 64px;
   background: white;
 }
+
+@media (max-width: 500px) {
+  ::ng-deep .mat-tab-header {
+    width: 100%;
+  }
+}

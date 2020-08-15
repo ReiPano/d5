@@ -1,3 +1,3 @@
-::ng-deep .mat-card-header-text {
+::ng-deep .login-title > .mat-card-header-text {
   margin: 10px auto !important;
 }

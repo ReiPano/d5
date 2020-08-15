@@ -4,6 +4,7 @@
 namespace App\Controller;
 
 
+use App\Entity\Story;
 use App\Repository\StoryRepository;
 use App\Repository\UserRepository;
 use App\Service\AuthService;
@@ -36,6 +37,11 @@ class PostsController extends AbstractController
             $user = $userRepository->findOneBy(array("username"=>$username, "token"=>$token));
             if ($user) {
                 $userStories = $user->getStories() ? $user->getStories()->getValues() : [];
+                foreach ($userStories as $userStory) {
+                    if ($userStory instanceof Story) {
+                        $attachments = $userStory->getAttachments()->getValues();
+                    }
+                }
                 $result = new ServiceResponse(true, $userStories, "Success");
             }
             else {

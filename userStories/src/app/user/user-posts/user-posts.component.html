@@ -1,7 +1,9 @@
 <mat-tab-group mat-align-tabs="center">
   <mat-tab label="User posts">
     <ng-container *ngIf="!areUserPostsLoading; else userPostsLoader">
-      <app-post *ngFor="let post of userPosts" [post]="post"></app-post>
+      <div class="container" *ngIf="userPosts && userPosts.length > 0; else emptyMessage">
+        <app-post *ngFor="let post of userPosts" [post]="post"></app-post>
+      </div>
     </ng-container>
     <ng-template #userPostsLoader>
       <div>
@@ -11,17 +13,20 @@
 
   </mat-tab>
   <mat-tab label="All posts">
-    <app-post></app-post>
-    <app-post></app-post>
-    <app-post></app-post>
-    <app-post></app-post>
-    <app-post></app-post>
-    <app-post></app-post>
-    <app-post></app-post>
-    <app-post></app-post>
-    <app-post></app-post>
-    <app-post></app-post>
-    <app-post></app-post>
-    <app-post></app-post>
+    <ng-container *ngIf="!areFriendPostsLoading; else friendPostsLoader">
+      <div class="container" *ngIf="friendPosts && friendPosts.length > 0; else emptyMessage">
+        <app-post *ngFor="let post of friendPosts" [post]="post"></app-post>
+      </div>
+    </ng-container>
+    <ng-template #friendPostsLoader>
+      <div>
+        <mat-spinner style="margin: 90px auto;"></mat-spinner>
+      </div>
+    </ng-template>
   </mat-tab>
 </mat-tab-group>
+
+
+<ng-template #emptyMessage>
+  <p style="text-align: center; margin-top: 20px;">No sotries to display</p>
+</ng-template>

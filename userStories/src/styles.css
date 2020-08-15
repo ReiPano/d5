@@ -19,9 +19,9 @@ body {
   width: 50%;
 }
 
-.mat-card-header-text {
+/* .mat-card-header-text {
   margin: auto;
-}
+} */
 
 mat-card {
   max-width: 1000px;

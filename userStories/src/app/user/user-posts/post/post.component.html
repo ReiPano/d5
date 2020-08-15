@@ -1,24 +1,23 @@
-<mat-card class="container" style="margin: 20px auto;" *ngIf="post">
+<mat-card class="container" style="margin: 20px auto; max-width: 700px;" *ngIf="post">
   <mat-card-header>
+    <div mat-card-avatar [style.background-image]="profileIcon" class="example-header-image"></div>
     <mat-card-title>{{ post.title }}</mat-card-title>
+    <mat-card-subtitle>{{ post.user.username }}</mat-card-subtitle>
   </mat-card-header>
-  <mat-card-content>
-    <p style="white-space: break-spaces;">{{post.content}}</p>
+  <mat-divider>
+  </mat-divider>
+  <mat-card-content style="margin-top: 20px;">
+    <p style="white-space: break-spaces;">{{ getContent() }}</p>
+    <carousel cellWidth="100%" height="376" [loop]="true" [dots]="true" *ngIf="post?.attachments?.collection?.elements?.length > 0">
+      <div class="carousel-cell" *ngFor="let item of post?.attachments?.collection?.elements">
+        <img [src]="'https://localhost:8000/' + item.fileName" *ngIf="item.fileName.indexOf('jpg') !== -1" alt="2">
+        <video controls *ngIf="item.fileName.indexOf('mp4') !== -1">
+          <source [src]="'https://localhost:8000/' + item.fileName" type="video/mp4">
+        </video>
+      </div>
+    </carousel>
   </mat-card-content>
-  <mat-card-actions>
-    <button mat-button>Ok</button>
-  </mat-card-actions>
-</mat-card>
-
-
-<mat-card class="container" style="margin: 20px auto;" *ngIf="!post">
-  <mat-card-header>
-    <mat-card-title>Title</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <p style="white-space: break-spaces;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec iaculis sit amet turpis et ornare. Quisque quis commodo lacus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Morbi vehicula erat ac lacinia elementum. Vestibulum non dui semper, tempus nisl ut, pharetra dolor. In bibendum sem sed nisl convallis, a porttitor mi maximus. Proin dui odio, malesuada vitae sem quis, suscipit dictum mi. Pellentesque vel imperdiet erat, eget molestie quam. Aliquam non libero sed eros pulvinar tempus.</p>
-  </mat-card-content>
-  <mat-card-actions>
-    <button mat-button>Ok</button>
+  <mat-card-actions style="text-align: right;">
+    <button mat-button color="primary" (click)="openFullPost(post)">More</button>
   </mat-card-actions>
 </mat-card>

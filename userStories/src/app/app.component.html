@@ -1,10 +1,10 @@
 
 <mat-toolbar color="primary" style="position: fixed; z-index: 2;">
-  <!-- <button mat-icon-button *ngIf="isUserAuthenticated"><mat-icon (click)="drawer.toggle()">menu</mat-icon></button> -->
+  <button mat-icon-button *ngIf="isUserAuthenticated"><mat-icon (click)="drawer.toggle()">menu</mat-icon></button>
   <span>User Stories</span>
 </mat-toolbar>
 <mat-sidenav-container class="example-container" [hasBackdrop]="false">
-  <mat-sidenav #drawer mode="side" style="width: 300px;" [disableClose]="true"  [opened]="isUserAuthenticated">
+  <mat-sidenav #drawer mode="side" style="width: 300px;" [disableClose]="true"  [opened]="isUserAuthenticated && !isMobile">
     <app-user-sidenav [user]="user"></app-user-sidenav>
   </mat-sidenav>
   <mat-sidenav-content>

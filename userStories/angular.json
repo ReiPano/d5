@@ -122,5 +122,8 @@
       }
     }
   },
-  "defaultProject": "userStories"
+  "defaultProject": "userStories",
+  "cli": {
+    "analytics": "878532e8-e8ad-407f-af3c-8fa1c6b0ffc8"
+  }
 }

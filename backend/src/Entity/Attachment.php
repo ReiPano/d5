@@ -37,6 +37,11 @@ class Attachment
      */
     private $story;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $fileName;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,6 +91,18 @@ class Attachment
     public function setStory(?Story $story): self
     {
         $this->story = $story;
+
+        return $this;
+    }
+
+    public function getFileName(): ?string
+    {
+        return $this->fileName;
+    }
+
+    public function setFileName(string $fileName): self
+    {
+        $this->fileName = $fileName;
 
         return $this;
     }

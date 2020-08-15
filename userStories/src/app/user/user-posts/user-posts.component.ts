@@ -12,6 +12,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class UserPostsComponent implements OnInit {
   userPosts: any[] = [];
   areUserPostsLoading: boolean;
+
+  friendPosts: any[] = [];
+  areFriendPostsLoading: boolean;
   contentWidth: number;
 
   constructor(private userPostService: UserPostService, private snackBar: MatSnackBar) { }

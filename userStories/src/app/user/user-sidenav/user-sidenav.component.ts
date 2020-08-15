@@ -18,9 +18,12 @@ export class UserSidenavComponent implements OnInit {
       this.backgroundImg = this.sanitization.bypassSecurityTrustStyle(`url(${user.backgroundImage})`);
     }
   }
-  constructor(private sanitization: DomSanitizer) { }
+  constructor(private sanitization: DomSanitizer, private authService: AuthService) { }
 
   ngOnInit() {
   }
 
+  public logOut() {
+    this.authService.logoutUser();
+  }
 }

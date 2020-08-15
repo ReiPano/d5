@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './shared/shared.module';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import { UserModule } from './user/user.module';
+import { DeviceDetectorModule } from 'ngx-device-detector';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { UserModule } from './user/user.module';
     BrowserAnimationsModule,
     SharedModule,
     MatSidenavModule,
-    UserModule
+    UserModule,
+    DeviceDetectorModule
   ],
   providers: [],
   bootstrap: [AppComponent]

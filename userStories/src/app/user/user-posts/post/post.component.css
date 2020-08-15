@@ -1,0 +1,8 @@
+.example-header-image {
+  background-size: cover;
+}
+
+::ng-deep .mat-card-header-text {
+  align-self: flex-end;
+  margin: 0px 10px !important;
+}
