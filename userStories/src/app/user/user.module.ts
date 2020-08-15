@@ -10,6 +10,7 @@ import { PostComponent } from './user-posts/post/post.component';
 import { PostFullComponent } from './user-posts/post-full/post-full.component';
 import { UserPostService } from './user-posts/user-post.service';
 import { SharedService } from '../shared/shared.service';
+import {MatListModule} from '@angular/material/list';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { SharedService } from '../shared/shared.service';
   imports: [
     CommonModule,
     MatTabsModule,
-    SharedModule
+    SharedModule,
+    MatListModule
   ],
   providers: [UserPostService, SharedService],
   exports: [UserSidenavComponent, UserPostsComponent, FormComponent, UserProfileComponent]

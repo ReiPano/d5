@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 export class AppComponent implements OnInit {
   title = 'userStories';
   isUserAuthenticated = false;
+  user: any;
 
   constructor(private authService: AuthService, private router: Router) {
   }
@@ -18,16 +19,21 @@ export class AppComponent implements OnInit {
     this.authService.userAuthenticatedObserver.subscribe(userAuthenticatedResponse => {
       this.isUserAuthenticated = userAuthenticatedResponse;
       this.isUserAuthenticated ?
-        this.router.navigateByUrl('posts') :
+        this.navigateToPosts() :
         this.router.navigateByUrl('login');
     });
 
     if (!!sessionStorage.getItem('username') && !!sessionStorage.getItem('token')) {
-      this.authService.authentivateUser(sessionStorage.getItem('username'), sessionStorage.getItem('token'));
+      this.authService.isUserAuthenticated(sessionStorage.getItem('username'), sessionStorage.getItem('token'));
     } else if (!!localStorage.getItem('username') && !!localStorage.getItem('token')) {
-      this.authService.authentivateUser(localStorage.getItem('username'), localStorage.getItem('token'));
+      this.authService.isUserAuthenticated(localStorage.getItem('username'), localStorage.getItem('token'));
     } else {
       this.router.navigateByUrl('login');
     }
+  }
+
+  private navigateToPosts() {
+    this.user = this.authService.user;
+    this.router.navigateByUrl('posts');
   }
 }

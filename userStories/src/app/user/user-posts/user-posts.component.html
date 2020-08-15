@@ -1,6 +1,14 @@
 <mat-tab-group mat-align-tabs="center">
   <mat-tab label="User posts">
-    <app-post *ngFor="let post of userPosts" [post]="post"></app-post>
+    <ng-container *ngIf="!areUserPostsLoading; else userPostsLoader">
+      <app-post *ngFor="let post of userPosts" [post]="post"></app-post>
+    </ng-container>
+    <ng-template #userPostsLoader>
+      <div>
+        <mat-spinner style="margin: 90px auto;"></mat-spinner>
+      </div>
+    </ng-template>
+
   </mat-tab>
   <mat-tab label="All posts">
     <app-post></app-post>

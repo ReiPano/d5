@@ -13,6 +13,7 @@ import { SharedService } from './shared.service';
 import { HttpClientModule } from '@angular/common/http';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [],
@@ -31,7 +32,8 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     ReactiveFormsModule,
     HttpClientModule,
     MatSnackBarModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatProgressSpinnerModule
   ],
   exports: [
     MatCardModule,
@@ -45,7 +47,8 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     FormsModule,
     ReactiveFormsModule,
     MatSnackBarModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatProgressSpinnerModule
   ]
 })
 export class SharedModule { }

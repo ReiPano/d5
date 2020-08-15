@@ -59,6 +59,16 @@ class User
      */
     private $token;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $profilePicture;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $backgroundImage;
+
     public function __construct()
     {
         $this->stories = new ArrayCollection();
@@ -180,6 +190,30 @@ class User
     public function setToken(?string $token): self
     {
         $this->token = $token;
+
+        return $this;
+    }
+
+    public function getProfilePicture(): ?string
+    {
+        return $this->profilePicture;
+    }
+
+    public function setProfilePicture(?string $profilePicture): self
+    {
+        $this->profilePicture = $profilePicture;
+
+        return $this;
+    }
+
+    public function getBackgroundImage(): ?string
+    {
+        return $this->backgroundImage;
+    }
+
+    public function setBackgroundImage(?string $backgroundImage): self
+    {
+        $this->backgroundImage = $backgroundImage;
 
         return $this;
     }

@@ -1,0 +1,15 @@
+.language-button-alb {
+  background-color: #e41e20;
+  margin: 0 5px;
+}
+
+.language-button-eng {
+  background-color: #000066;
+  margin: 0 5px;
+}
+
+.example-fill-remaining-space {
+  /* This fills the remaining space, by using flexbox.
+      Every toolbar row uses a flexbox row layout. */
+  flex: 1 1 auto;
+}

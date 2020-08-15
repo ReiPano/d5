@@ -1,14 +1,14 @@
 
-<mat-sidenav-container class="example-container">
-  <mat-sidenav #drawer mode="over" style="width: 300px;" [disableClose]="false">
-    <app-user-sidenav></app-user-sidenav>
+<mat-toolbar color="primary" style="position: fixed; z-index: 2;">
+  <!-- <button mat-icon-button *ngIf="isUserAuthenticated"><mat-icon (click)="drawer.toggle()">menu</mat-icon></button> -->
+  <span>User Stories</span>
+</mat-toolbar>
+<mat-sidenav-container class="example-container" [hasBackdrop]="false">
+  <mat-sidenav #drawer mode="side" style="width: 300px;" [disableClose]="true"  [opened]="isUserAuthenticated">
+    <app-user-sidenav [user]="user"></app-user-sidenav>
   </mat-sidenav>
   <mat-sidenav-content>
-    <mat-toolbar color="primary" style="position: fixed; z-index: 2;">
-      <button mat-icon-button *ngIf="isUserAuthenticated"><mat-icon (click)="drawer.toggle()">menu</mat-icon></button>
-      <span>User Stories</span>
-    </mat-toolbar>
-    <div style="margin-top: 65px; z-index: 2;">
+    <div style="z-index: 2;">
       <router-outlet></router-outlet>
     </div>
   </mat-sidenav-content>

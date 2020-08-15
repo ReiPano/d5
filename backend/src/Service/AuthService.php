@@ -21,7 +21,7 @@ class AuthService
                     $timeNow = new \DateTime();
                     $diff = $dateUpdated->diff($timeNow);
                     if (is_null($dateUpdated) || ($diff && $diff->i < 30)) {
-                        $result = new ServiceResponse(true, $token, "Success");
+                        $result = new ServiceResponse(true, $user, "Success");
                     }
                     else {
                         $result = new ServiceResponse(false, null, "Token is not valid");

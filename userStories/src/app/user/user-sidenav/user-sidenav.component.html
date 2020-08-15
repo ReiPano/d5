@@ -1,1 +1,21 @@
-<p>user-sidenav works!</p>
+<div class="img bg-wrap text-center py-4" [style.background-image]="backgroundImg" *ngIf="loggedinUser">
+  <div class="user-logo">
+    <div class="img" [style.background-image]="profileImg"></div>
+    <h3>{{ loggedinUser.username }}</h3>
+    <button mat-raised-button>Dashboard</button>
+  </div>
+</div>
+<button mat-button class="full-width">
+  Home
+</button>
+<!-- <mat-selection-list #shoes>
+  <mat-list-option>
+
+  </mat-list-option>
+  <mat-list-option>
+    Profile
+  </mat-list-option>
+  <mat-list-option>
+    Logout
+  </mat-list-option>
+</mat-selection-list> -->

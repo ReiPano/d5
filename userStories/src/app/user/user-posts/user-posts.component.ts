@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, isDevMode } from '@angular/core';
 import { UserPostService } from './user-post.service';
 import { AuthService } from 'src/app/auth/auth.service';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-user-posts',
@@ -10,22 +11,27 @@ import { Router } from '@angular/router';
 })
 export class UserPostsComponent implements OnInit {
   userPosts: any[] = [];
+  areUserPostsLoading: boolean;
+  contentWidth: number;
 
-  constructor(private userPostService: UserPostService, private authService: AuthService, private router: Router) { }
+  constructor(private userPostService: UserPostService, private snackBar: MatSnackBar) { }
 
   ngOnInit() {
-    this.authService.userAuthenticatedObserver.subscribe(response => {
-      response ? this.getUserPosts() : this.router.navigateByUrl('login');
-    });
+    this.getUserPosts();
   }
 
   private getUserPosts() {
+    this.areUserPostsLoading = true;
     this.userPostService.getUserPosts().subscribe(response => {
+      if (isDevMode()) { console.log('getUserPosts', response); }
       if (response.success) {
         this.userPosts = response.result;
       } else {
-
+        this.snackBar.open(response.message, 'Ok', {
+          duration: 2000
+        });
       }
+      this.areUserPostsLoading = false;
     });
   }
 

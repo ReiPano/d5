@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, isDevMode } from '@angular/core';
 import { Router } from '@angular/router';
 import { SharedService } from 'src/app/shared/shared.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -40,11 +40,10 @@ export class RegisterComponent implements OnInit {
   }
 
   public regiserUser() {
-    console.log(this.registerFormGroup);
     if (this.checkPasswordMatch(false)) {
       const formData = new FormData(this.registerForm.nativeElement);
       this.sharedService.post('https://localhost:8000/auth/register', formData).subscribe(response => {
-        console.log(response);
+        if (isDevMode()) { console.log('regiserUser', response); }
         if (response.success) {
           this.goToLogin();
         } else {

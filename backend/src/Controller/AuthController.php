@@ -44,7 +44,7 @@ class AuthController extends AbstractController
                     $user->setDateUpdated(date_create());
                     $this->getDoctrine()->getManager()->persist($user);
                     $this->getDoctrine()->getManager()->flush();
-                    $result = new ServiceResponse(true, $token, "Success");
+                    $result = new ServiceResponse(true, $user, "Success");
                 }
                 else {
                     $result = new ServiceResponse(false, null, "Error! Password not correct");
