@@ -17,7 +17,7 @@ export class RegisterComponent implements OnInit {
   // email;
   registerFormGroup: FormGroup;
 
-  @ViewChild('registerForm', {static: false}) registerForm: ElementRef;
+  @ViewChild('registerForm') registerForm: ElementRef;
 
   constructor(private router: Router, private sharedService: SharedService, private snackBar: MatSnackBar) { }
 
