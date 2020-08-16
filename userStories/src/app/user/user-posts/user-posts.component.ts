@@ -28,7 +28,9 @@ export class UserPostsComponent implements OnInit {
     this.userPostService.getUserPosts().subscribe(response => {
       if (isDevMode()) { console.log('getUserPosts', response); }
       if (response.success) {
-        this.userPosts = response.result;
+        for (const post of response.result) {
+          this.userPosts.push(JSON.parse(post));
+        }
       } else {
         this.snackBar.open(response.message, 'Ok', {
           duration: 2000

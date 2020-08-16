@@ -4,12 +4,14 @@ import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { UserPostsComponent } from './user/user-posts/user-posts.component';
 import { AuthGuardService } from './auth/auth-guard.service';
+import { FormComponent } from './user/user-posts/form/form.component';
 
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
-  {path: 'posts', component: UserPostsComponent, canActivate: [AuthGuardService]}
+  {path: 'posts', component: UserPostsComponent, canActivate: [AuthGuardService]},
+  {path: 'post-form', component: FormComponent}
 ];
 
 @NgModule({

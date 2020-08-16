@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AuthService } from 'src/app/auth/auth.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-sidenav',
@@ -18,12 +19,16 @@ export class UserSidenavComponent implements OnInit {
       this.backgroundImg = this.sanitization.bypassSecurityTrustStyle(`url(${user.backgroundImage})`);
     }
   }
-  constructor(private sanitization: DomSanitizer, private authService: AuthService) { }
+  constructor(private sanitization: DomSanitizer, private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
   }
 
   public logOut() {
     this.authService.logoutUser();
+  }
+
+  public addPost() {
+    this.router.navigateByUrl('post-form');
   }
 }

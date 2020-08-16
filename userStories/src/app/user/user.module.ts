@@ -13,9 +13,17 @@ import { SharedService } from '../shared/shared.service';
 import {MatListModule} from '@angular/material/list';
 import {MatDialogModule} from '@angular/material/dialog';
 import {IvyCarouselModule} from 'angular-responsive-carousel';
+import {FileInputComponent} from './user-posts/form/file-input/file-input.component';
 
 @NgModule({
-  declarations: [UserSidenavComponent, UserPostsComponent, FormComponent, UserProfileComponent, PostComponent, PostFullComponent],
+  declarations: [
+    UserSidenavComponent,
+    UserPostsComponent,
+    FormComponent,
+    UserProfileComponent,
+    PostComponent,
+    PostFullComponent,
+    FileInputComponent],
   imports: [
     CommonModule,
     MatTabsModule,
