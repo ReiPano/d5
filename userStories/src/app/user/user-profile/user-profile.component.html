@@ -1,1 +1,112 @@
-<p>user-profile works!</p>
+<div class="container">
+  <mat-card style="padding: 0px; margin: 20px auto;">
+    <mat-card-header *ngIf="user" class="img bg-wrap text-center py-4" style="background-size: cover; height: 430px;"
+      [style]="user ? 'background-image: url(' + user.backgroundImage + ');' : ''">
+      <div class="user-logo" style="margin: 3% auto;">
+        <div class="img" [style]="user ? 'background-image: url(' + user.profilePicture + ');' : ''"
+          style="width: 200px; height: 200px;"></div>
+        <button mat-icon-button class="profile-img-edit-button" (click)="openProfilePictureInput()">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <input #profilePicture type="file" name="profilePicture" id="profilePicture" hidden>
+        <input #backgroundImage type="file" name="backgroundImage" id="backgroundImage" hidden>
+      </div>
+      <button mat-icon-button class="cover-img-edit-button" (click)="openBackgroundImageInput()">
+        <mat-icon>edit</mat-icon>
+      </button>
+    </mat-card-header>
+    <mat-card-content>
+      <section id="user_data" style="margin: 20px;" *ngIf="user">
+        <!-- <mat-form-field class="user-data">
+          <input matInput type="text" placeholder="Adresa" [value]="user.Adresa" [(ngModel)]="user.Adresa"
+            [readonly]="fieldBeingEditted !== 1">
+          <button mat-icon-button *ngIf="fieldBeingEditted !== 1" matSuffix class="edit-button"
+            style="width: 40px; height: 40px;" (click)="editData(1)" [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="'hide'">
+            <mat-icon style="line-height: 24px; font-size: 150%;">edit</mat-icon>
+          </button>
+          <button mat-icon-button *ngIf="fieldBeingEditted === 1" matSuffix style="width: 40px; height: 40px;"
+            (click)="saveData('Adresa')" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="'hide'">
+            <mat-icon style="line-height: 24px; font-size: 150%;">check</mat-icon>
+          </button>
+          <button mat-icon-button *ngIf="fieldBeingEditted === 1 && isUserDataSaving" matSuffix
+            style="width: 40px; height: 40px;" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="'hide'">
+            <mat-icon style="line-height: 24px; font-size: 150%;">
+              <mat-spinner matSuffix diameter="25"></mat-spinner>
+            </mat-icon>
+          </button>
+        </mat-form-field> -->
+
+        <!-- <mat-form-field class="user-data">
+          <input matInput type="text" placeholder="Numri Cel" [value]="user.Nr_Cel" [(ngModel)]="user.Nr_Cel"
+            [readonly]="fieldBeingEditted !== 2">
+          <button mat-icon-button *ngIf="fieldBeingEditted !== 2" matSuffix class="edit-button"
+            style="width: 40px; height: 40px;" (click)="editData(2)" [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="'hide'">
+            <mat-icon style="line-height: 24px; font-size: 150%;">edit</mat-icon>
+          </button>
+          <button mat-icon-button *ngIf="fieldBeingEditted === 2" matSuffix style="width: 40px; height: 40px;"
+            (click)="saveData('Nr_Cel')" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="'hide'">
+            <mat-icon style="line-height: 24px; font-size: 150%;">check</mat-icon>
+          </button>
+          <button mat-icon-button *ngIf="fieldBeingEditted === 2 && isUserDataSaving" matSuffix
+            style="width: 40px; height: 40px;" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="'hide'">
+            <mat-icon style="line-height: 24px; font-size: 150%;">
+              <mat-spinner matSuffix diameter="25"></mat-spinner>
+            </mat-icon>
+          </button>
+        </mat-form-field> -->
+
+        <mat-form-field class="user-data">
+          <input matInput type="text" placeholder="Email" [value]="user.email" [(ngModel)]="user.email"
+            [readonly]="fieldBeingEditted !== 3">
+          <button mat-icon-button *ngIf="fieldBeingEditted !== 3" matSuffix class="edit-button"
+            style="width: 40px; height: 40px;" (click)="editData(3)" [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="'hide'">
+            <mat-icon style="line-height: 24px; font-size: 150%;">edit</mat-icon>
+          </button>
+          <button mat-icon-button *ngIf="fieldBeingEditted === 3 && !isUserDataSaving" matSuffix
+            style="width: 40px; height: 40px;" (click)="saveData('Email')" [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="'hide'">
+            <mat-icon style="line-height: 24px; font-size: 150%;">check</mat-icon>
+          </button>
+          <button mat-icon-button *ngIf="fieldBeingEditted === 3 && isUserDataSaving" matSuffix
+            style="width: 40px; height: 40px;" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="'hide'">
+            <mat-icon style="line-height: 24px; font-size: 150%;">
+              <mat-spinner matSuffix diameter="25"></mat-spinner>
+            </mat-icon>
+          </button>
+        </mat-form-field>
+
+        <!-- <mat-form-field class="user-data">
+          <mat-label>Choose a date</mat-label>
+          <input matInput [matDatepicker]="picker" placeholder="Datlindja" [value]="user.Datlindja"
+            [(ngModel)]="user.Datlindja" readonly>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker [disabled]="fieldBeingEditted !== 4"></mat-datepicker>
+          <button mat-icon-button *ngIf="fieldBeingEditted !== 4" matSuffix class="edit-button"
+            style="width: 40px; height: 40px;" (click)="editData(4)" [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="'hide'">
+            <mat-icon style="line-height: 24px; font-size: 150%;">edit</mat-icon>
+          </button>
+          <button mat-icon-button *ngIf="fieldBeingEditted === 4" matSuffix style="width: 40px; height: 40px;"
+            (click)="saveData('Datlindja')" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="'hide'">
+            <mat-icon style="line-height: 24px; font-size: 150%;">check</mat-icon>
+          </button>
+          <button mat-icon-button *ngIf="fieldBeingEditted === 4 && isUserDataSaving" matSuffix
+            style="width: 40px; height: 40px;" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="'hide'">
+            <mat-icon style="line-height: 24px; font-size: 150%;">
+              <mat-spinner matSuffix diameter="25"></mat-spinner>
+            </mat-icon>
+          </button>
+        </mat-form-field> -->
+
+        <div style="text-align: right;">
+          <button mat-raised-button color="primary">New idea</button>
+        </div>
+      </section>
+    </mat-card-content>
+    <mat-card-actions>
+    </mat-card-actions>
+  </mat-card>
+</div>

@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use App\Service\AuthService;
+use App\Service\FileUploadService;
 use App\Service\SerializerService;
 use App\Service\TokenService;
 use App\ViewModels\ServiceResponse;
@@ -83,15 +84,18 @@ class AuthController extends AbstractController
      * @Route("/auth/register")
      * @param Request $request
      * @param SerializerService $serializerService
+     * @param FileUploadService $fileUploadService
      * @return Response
      */
-    public function register(Request $request, SerializerService $serializerService) {
+    public function register(Request $request, SerializerService $serializerService, FileUploadService $fileUploadService) {
         $result = null;
 
         $username = $request->request->get('username');
         $password = $request->request->get('password');
         $reEnteredPassword = $request->request->get('reEnteredPassword');
         $email = $request->request->get('email');
+        $profilePicture = $request->request->get('profilePicture');
+        $backgroundImage = $request->request->get('backgroundImage');
 
         if (!is_null($username) && !is_null($password) && !is_null($reEnteredPassword) && !is_null($email)) {
             if ($password == $reEnteredPassword) {
@@ -107,6 +111,8 @@ class AuthController extends AbstractController
                         $user->setPassword($passwordHash);
                         $user->setEmail($email);
                         $user->setDeleted(false);
+                        $user->setProfilePicture(json_decode($profilePicture));
+                        $user->setBackgroundImage(json_decode($backgroundImage));
                         $user->setDateCreated(date_create());
                         try {
                             $entityManager->persist($user);

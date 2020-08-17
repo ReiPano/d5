@@ -14,6 +14,7 @@ use App\Service\FileUploadService;
 use App\Service\SerializerService;
 use App\Service\TokenService;
 use App\ViewModels\ServiceResponse;
+use Doctrine\Common\Proxy\Proxy;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -47,6 +48,56 @@ class PostsController extends AbstractController
                     }
                 }
                 $result = new ServiceResponse(true, $jsonUserStories, "Success");
+            }
+            else {
+                $result = new ServiceResponse(false, null, "User not found");
+            }
+        }
+        else {
+            $result = $authResult;
+        }
+
+        $response = new Response();
+        $response->setContent($serializerService->jsonSerialize($result));
+        return $response;
+    }
+
+    /**
+     * @Route("/posts/get-other-posts")
+     * @param Request $request
+     * @param SerializerService $serializerService
+     * @param AuthService $authService
+     * @return Response
+     */
+    public function getOtherUserPosts(Request $request, SerializerService $serializerService, AuthService $authService) {
+        $result = null;
+        $username = $request->query->get('username');
+        $token = $request->query->get('token');
+
+        $authResult = $authService->authenticateUserByUsernameAndToken($username, $token, $this->getDoctrine());
+        if ($authResult->getSuccess()) {
+            $userRepository = new UserRepository($this->getDoctrine());
+            $user = $userRepository->findOneBy(array("username"=>$username, "token"=>$token));
+            if ($user) {
+                $storyRepository = new StoryRepository($this->getDoctrine());
+                $query = $storyRepository->createQueryBuilder('s');
+                $query->where("s.user != :userId")->setParameter("userId", $user->getId());
+                $query->orderBy("s.dateCreated", "desc");
+                $otherStories = $query->getQuery()->getResult();
+                $jsonOtherStories = [];
+                foreach ($otherStories as $otherStory) {
+                    if ($otherStory instanceof Story) {
+                        $attachments = $otherStory->getAttachments()->getValues();
+                        $otherUser = $otherStory->getUser();
+                        $newOtherUser = new User();
+                        $newOtherUser->setUsername($otherUser->getUsername());
+                        $newOtherUser->setProfilePicture($otherUser->getProfilePicture());
+                        $newOtherUser->setBackgroundImage($otherUser->getBackgroundImage());
+                        $otherStory->setUser($newOtherUser);
+                        array_push($jsonOtherStories, $serializerService->jsonSerialize($otherStory));
+                    }
+                }
+                $result = new ServiceResponse(true, $jsonOtherStories, "Success");
             }
             else {
                 $result = new ServiceResponse(false, null, "User not found");

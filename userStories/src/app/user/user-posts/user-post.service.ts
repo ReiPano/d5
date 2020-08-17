@@ -16,4 +16,11 @@ export class UserPostService {
     return this.sharedService.get(url);
   }
 
+  public getAllPosts() {
+    let url = 'https://localhost:8000/posts/get-other-posts';
+    url += `?username=${this.authService.username}`;
+    url += `&token=${this.authService.token}`;
+    return this.sharedService.get(url);
+  }
+
 }

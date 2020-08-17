@@ -7,13 +7,14 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import {MatTabsModule} from '@angular/material/tabs';
 import { SharedModule } from '../shared/shared.module';
 import { PostComponent } from './user-posts/post/post.component';
-import { PostFullComponent } from './user-posts/post-full/post-full.component';
+import { PostFullComponent } from './user-posts/post/post-full/post-full.component';
 import { UserPostService } from './user-posts/user-post.service';
 import { SharedService } from '../shared/shared.service';
 import {MatListModule} from '@angular/material/list';
 import {MatDialogModule} from '@angular/material/dialog';
 import {IvyCarouselModule} from 'angular-responsive-carousel';
 import {FileInputComponent} from './user-posts/form/file-input/file-input.component';
+import { MomentDateModule, MatMomentDateModule } from '@angular/material-moment-adapter';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,9 @@ import {FileInputComponent} from './user-posts/form/file-input/file-input.compon
     SharedModule,
     MatListModule,
     MatDialogModule,
-    IvyCarouselModule
+    IvyCarouselModule,
+    MomentDateModule,
+    MatMomentDateModule
   ],
   providers: [UserPostService, SharedService],
   exports: [UserSidenavComponent, UserPostsComponent, FormComponent, UserProfileComponent]

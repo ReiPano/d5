@@ -2,6 +2,7 @@ import { Injectable, isDevMode } from '@angular/core';
 import { Subject } from 'rxjs';
 import { SharedService } from '../shared/shared.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class AuthService {
   username: string;
   token: string;
   user: any;
-  constructor(private sharedService: SharedService, private snackBar: MatSnackBar) { }
+  constructor(private sharedService: SharedService, private snackBar: MatSnackBar, private router: Router) { }
 
   loginUser(username: string, password: string, rememberMe: boolean) {
     const formData = new FormData();
@@ -32,6 +33,7 @@ export class AuthService {
         this.token = response.result.token;
         this.user = response.result;
         this.userAuthenticatedObserver.next(true);
+        this.router.navigateByUrl('posts');
       } else {
         this.snackBar.open(response.message, 'Ok', {
           duration: 3300
@@ -69,5 +71,9 @@ export class AuthService {
 
   public authenticateUser(formData: FormData) {
     return this.sharedService.post('https://localhost:8000/auth/token-authentication', formData);
+  }
+
+  public setAuthenticated(success) {
+    this.userAuthenticatedObserver.next(success);
   }
 }

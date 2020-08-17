@@ -13,14 +13,15 @@ export class UserPostsComponent implements OnInit {
   userPosts: any[] = [];
   areUserPostsLoading: boolean;
 
-  friendPosts: any[] = [];
-  areFriendPostsLoading: boolean;
+  allPosts: any[] = [];
+  areAllPostsLoading: boolean;
   contentWidth: number;
 
   constructor(private userPostService: UserPostService, private snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.getUserPosts();
+    this.getAllPosts();
   }
 
   private getUserPosts() {
@@ -37,6 +38,23 @@ export class UserPostsComponent implements OnInit {
         });
       }
       this.areUserPostsLoading = false;
+    });
+  }
+
+  private getAllPosts() {
+    this.areAllPostsLoading = true;
+    this.userPostService.getAllPosts().subscribe(response => {
+      if (isDevMode()) { console.log('getAllPosts', response); }
+      if (response.success) {
+        for (const post of response.result) {
+          this.allPosts.push(JSON.parse(post));
+        }
+      } else {
+        this.snackBar.open(response.message, 'Ok', {
+          duration: 2000
+        });
+      }
+      this.areAllPostsLoading = false;
     });
   }
 

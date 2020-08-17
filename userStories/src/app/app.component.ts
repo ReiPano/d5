@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from './auth/auth.service';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
@@ -15,6 +15,8 @@ export class AppComponent implements OnInit {
   isMobile: boolean;
   isTablet: boolean;
   isDesktopDevice: boolean;
+  loading: boolean;
+  currentUrl: any;
 
   constructor(private authService: AuthService, private router: Router, private deviceService: DeviceDetectorService) {
   }
@@ -22,9 +24,10 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.authService.userAuthenticatedObserver.subscribe(userAuthenticatedResponse => {
       this.isUserAuthenticated = userAuthenticatedResponse;
-      this.isUserAuthenticated ?
-        this.navigateToPosts() :
+      userAuthenticatedResponse ?
+        this.navigate() :
         this.router.navigateByUrl('login');
+      this.loading = false;
     });
 
     if (!!sessionStorage.getItem('username') && !!sessionStorage.getItem('token')) {
@@ -41,8 +44,11 @@ export class AppComponent implements OnInit {
     this.isDesktopDevice = this.deviceService.isDesktop();
   }
 
-  private navigateToPosts() {
+  private navigate() {
     this.user = this.authService.user;
-    this.router.navigateByUrl('posts');
+  }
+
+  public onNavigationStarted() {
+    this.loading = true;
   }
 }

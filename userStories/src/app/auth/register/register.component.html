@@ -42,6 +42,23 @@
           Enter a valid email
         </mat-error>
       </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <input matInput placeholder="Profile picture" name="profilePictureName" formControlName="profilePicture" (click)="openProfilePictureInput()" readonly>
+        <mat-error *ngIf="registerFormGroup.get('email').invalid && registerFormGroup.get('profilePicture').errors?.required">
+          Profile picture is required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <input matInput placeholder="Background image" name="backgroundImageName" formControlName="backgroundImage" (click)="openBackgroundImageInput()" readonly>
+        <mat-error *ngIf="registerFormGroup.get('email').invalid && registerFormGroup.get('backgroundImage').errors?.required">
+          Background image is required
+        </mat-error>
+      </mat-form-field>
+
+      <input type="file" #profilePicture name="profilePicture" id="profilePicture" (change)="setProfilePictureName($event)" hidden>
+      <input type="file" #backgroundImage name="backgroundImage" id="backgroundImage" (change)="setBackgroundImageName($event)" hidden>
     </form>
   </mat-card-content>
   <mat-card-actions>

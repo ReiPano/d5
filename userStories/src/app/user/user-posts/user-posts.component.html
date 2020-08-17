@@ -13,12 +13,12 @@
 
   </mat-tab>
   <mat-tab label="All posts">
-    <ng-container *ngIf="!areFriendPostsLoading; else friendPostsLoader">
-      <div class="container" *ngIf="friendPosts && friendPosts.length > 0; else emptyMessage">
-        <app-post *ngFor="let post of friendPosts" [post]="post"></app-post>
+    <ng-container *ngIf="!areAllPostsLoading; else allPostsLoader">
+      <div class="container" *ngIf="allPosts && allPosts.length > 0; else emptyMessage">
+        <app-post *ngFor="let post of allPosts" [post]="post"></app-post>
       </div>
     </ng-container>
-    <ng-template #friendPostsLoader>
+    <ng-template #allPostsLoader>
       <div>
         <mat-spinner style="margin: 90px auto;"></mat-spinner>
       </div>

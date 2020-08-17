@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatDialog } from '@angular/material/dialog';
-import { PostFullComponent } from '../post-full/post-full.component';
+import { PostFullComponent } from './post-full/post-full.component';
 
 @Component({
   selector: 'app-post',
@@ -33,6 +33,7 @@ export class PostComponent implements OnInit {
       PostFullComponent,
       {
         // height: '90%',
+        minWidth: '85%',
         data: {
           post
         }

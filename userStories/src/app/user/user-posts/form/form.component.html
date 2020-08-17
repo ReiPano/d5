@@ -15,7 +15,7 @@
           </mat-error>
         </mat-form-field>
         <mat-form-field class="full-width">
-          <input matInput placeholder="Description" name="content" formControlName="content">
+          <textarea matInput placeholder="Description" name="content" formControlName="content"></textarea>
           <mat-error *ngIf="newPostFormGroup.get('content').invalid && newPostFormGroup.get('content').errors?.required">
             Description is required
           </mat-error>

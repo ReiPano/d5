@@ -10,14 +10,13 @@ import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControl, Valid
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
-
-  // username;
-  // password;
-  // reEnteredPassword;
-  // email;
   registerFormGroup: FormGroup;
 
   @ViewChild('registerForm') registerForm: ElementRef;
+  @ViewChild('profilePicture') profilePicture: ElementRef;
+  @ViewChild('backgroundImage') backgroundImage: ElementRef;
+  profilePictureBase64: string | ArrayBuffer;
+  backgroundImageBase64: string | ArrayBuffer;
 
   constructor(private router: Router, private sharedService: SharedService, private snackBar: MatSnackBar) { }
 
@@ -27,11 +26,15 @@ export class RegisterComponent implements OnInit {
         username: new FormControl('', Validators.required),
         password: new FormControl('', [Validators.required, Validators.minLength(6)]),
         reEnteredPassword: new FormControl('', [Validators.required, Validators.minLength(6)]),
-        email: new FormControl('', [Validators.required, Validators.email])
+        email: new FormControl('', [Validators.required, Validators.email]),
+        profilePicture: new FormControl('', [Validators.required]),
+        backgroundImage: new FormControl('', [Validators.required]),
       }
     );
 
+    // tslint:disable-next-line: max-line-length
     this.registerFormGroup.get('password').setValidators([Validators.required, Validators.minLength(6), this.passwordMatchValidation(true)]);
+    // tslint:disable-next-line: max-line-length
     this.registerFormGroup.get('reEnteredPassword').setValidators([Validators.required, Validators.minLength(6), this.passwordMatchValidation(true)]);
   }
 
@@ -42,6 +45,8 @@ export class RegisterComponent implements OnInit {
   public regiserUser() {
     if (this.checkPasswordMatch(false)) {
       const formData = new FormData(this.registerForm.nativeElement);
+      formData.append('profilePicture', JSON.stringify(this.profilePictureBase64));
+      formData.append('backgroundImage', JSON.stringify(this.backgroundImageBase64));
       this.sharedService.post('https://localhost:8000/auth/register', formData).subscribe(response => {
         if (isDevMode()) { console.log('regiserUser', response); }
         if (response.success) {
@@ -81,5 +86,37 @@ export class RegisterComponent implements OnInit {
     return (isView || (passwordControl && reEnterPasswordControl)) &&
      passwordControl.value === reEnterPasswordControl.value;
   }
+
+
+  openProfilePictureInput() {
+    this.profilePicture.nativeElement.click();
+  }
+
+  openBackgroundImageInput() {
+    this.backgroundImage.nativeElement.click();
+  }
+
+  setProfilePictureName(event) {
+    this.registerFormGroup.get('profilePicture').setValue(event?.target?.files[0]?.name);
+    this.getBase64(event?.target?.files[0], 1);
+  }
+
+  setBackgroundImageName(event) {
+    this.registerFormGroup.get('backgroundImage').setValue(event?.target?.files[0]?.name);
+    this.getBase64(event?.target?.files[0], 2);
+  }
+
+  getBase64(file, type) {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    // return reader.result;
+    reader.onload = () => {
+        type === 1 ?
+          this.profilePictureBase64 = reader.result :
+          this.backgroundImageBase64 = reader.result;
+    };
+    reader.onerror = (error) => {
+    };
+}
 
 }

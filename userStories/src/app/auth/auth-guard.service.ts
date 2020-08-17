@@ -20,11 +20,13 @@ export class AuthGuardService implements CanActivate {
         this.auth.authenticateUser(formData).subscribe(response => {
             if (isDevMode()) { console.log('Authorization', response); }
             if (response.success) {
-                observer.next(true);
+              sessionStorage.setItem('location', this.router.url.substr(1));
+              observer.next(true);
             } else {
-                this.router.navigateByUrl('login');
-                observer.next(false);
+              this.router.navigateByUrl('login');
+              observer.next(false);
             }
+            this.auth.setAuthenticated(response.success);
         });
     });
   }

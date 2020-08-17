@@ -45,7 +45,7 @@ class Story
     private $content;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="stories")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="stories", fetch="EAGER")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;

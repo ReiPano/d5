@@ -8,7 +8,7 @@
   </mat-divider>
   <mat-card-content style="margin-top: 20px;">
     <p style="white-space: break-spaces;">{{ getContent() }}</p>
-    <carousel cellWidth="100%" height="376" [loop]="true" [dots]="true" *ngIf="post?.attachments?.collection?.elements?.length > 0">
+    <carousel cellWidth="100%" height="376" [dots]="true" *ngIf="post?.attachments?.collection?.elements?.length > 0">
       <div class="carousel-cell" *ngFor="let item of post?.attachments?.collection?.elements">
         <img [src]="'https://localhost:8000/' + item.fileName" *ngIf="item.fileName.indexOf('mp4') === -1" alt="2">
         <video controls *ngIf="item.fileName.indexOf('mp4') !== -1">
