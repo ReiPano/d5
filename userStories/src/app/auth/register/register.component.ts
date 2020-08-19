@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, isDevMode } from '@angular/co
 import { Router } from '@angular/router';
 import { SharedService } from 'src/app/shared/shared.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
+import { FormGroup, FormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 
 @Component({
   selector: 'app-register',
@@ -13,6 +13,7 @@ export class RegisterComponent implements OnInit {
   registerFormGroup: FormGroup;
 
   @ViewChild('registerForm') registerForm: ElementRef;
+  isLoading: boolean;
 
   constructor(private router: Router, private sharedService: SharedService, private snackBar: MatSnackBar) { }
 
@@ -26,10 +27,13 @@ export class RegisterComponent implements OnInit {
       }
     );
 
-    // tslint:disable-next-line: max-line-length
-    this.registerFormGroup.get('password').setValidators([Validators.required, Validators.minLength(6), this.passwordMatchValidation(true)]);
-    // tslint:disable-next-line: max-line-length
-    this.registerFormGroup.get('reEnteredPassword').setValidators([Validators.required, Validators.minLength(6), this.passwordMatchValidation(true)]);
+    this.registerFormGroup.get('password').setValidators(
+      [Validators.required, Validators.minLength(6), this.passwordMatchValidation(true)]
+    );
+
+    this.registerFormGroup.get('reEnteredPassword').setValidators(
+      [Validators.required, Validators.minLength(6), this.passwordMatchValidation(true)]
+    );
   }
 
   public goToLogin() {
@@ -38,8 +42,10 @@ export class RegisterComponent implements OnInit {
 
   public regiserUser() {
     if (this.checkPasswordMatch(false)) {
+      this.isLoading = true;
       const formData = new FormData(this.registerForm.nativeElement);
-      this.sharedService.post('http://192.168.100.12:8000/auth/register', formData).subscribe(response => {
+      this.sharedService.post(this.sharedService.url + '/auth/register', formData).subscribe(response => {
+        this.isLoading = false;
         if (isDevMode()) { console.log('regiserUser', response); }
         if (response.success) {
           this.goToLogin();

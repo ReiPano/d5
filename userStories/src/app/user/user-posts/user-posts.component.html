@@ -1,5 +1,5 @@
 <mat-tab-group #matTabGroup mat-align-tabs="center" [animationDuration]="200" [class.drawer-opened]="drawerStatus">
-  <mat-tab label="All posts">
+  <mat-tab label="All stories">
     <ng-container *ngIf="!areAllPostsLoading; else allPostsLoader">
       <div class="container" *ngIf="allPosts && allPosts.length > 0; else emptyMessage">
         <app-post *ngFor="let post of allPosts" [post]="post"></app-post>
@@ -11,7 +11,7 @@
       </div>
     </ng-template>
   </mat-tab>
-  <mat-tab [label]="username + '\'s posts'">
+  <mat-tab [label]="username + '\'s stories'">
     <ng-container *ngIf="!areUserPostsLoading; else userPostsLoader">
       <div class="container" *ngIf="userPosts && userPosts.length > 0; else emptyMessage">
         <app-post *ngFor="let post of userPosts" [post]="post" [allowDelete]="true" (deleted)="onDeleted($event)"></app-post>

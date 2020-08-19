@@ -172,4 +172,35 @@ class AuthController extends AbstractController
         $response->setContent($serializerService->jsonSerialize($result));
         return $response;
     }
+
+    /**
+     * @Route("/auth/logout")
+     * @param Request $request
+     * @param SerializerService $serializerService
+     * @return Response
+     */
+    public function logout(Request $request, SerializerService $serializerService) {
+        $result = null;
+        $username = $request->request->get('username');
+        $userRepository = new UserRepository($this->getDoctrine());
+        if (!is_null($username)) {
+            $user = $userRepository->findOneBy(array("username"=>$username));
+            if (!is_null($user)) {
+                $user->setToken(null);
+                $this->getDoctrine()->getManager()->persist($user);
+                $this->getDoctrine()->getManager()->flush();
+                $result = new ServiceResponse(true, null, "Success");
+            }
+            else {
+                $result = new ServiceResponse(false, null, "User not found");
+            }
+        }
+        else {
+            $result = new ServiceResponse(false, null, "Username is empty");
+        }
+
+        $response = new Response();
+        $response->setContent($serializerService->jsonSerialize($result));
+        return $response;
+    }
 }

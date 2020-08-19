@@ -8,14 +8,14 @@
     </button>
   </mat-card-header>
   <mat-card-content>
-    <mat-dialog-content cdkFocusInitial>
-      <ngb-carousel [interval]="false" *ngIf="post?.attachments?.collection?.elements?.length > 0">
+    <mat-dialog-content>
+      <ngb-carousel cdkFocusInitial [interval]="false" *ngIf="post?.attachments?.collection?.elements?.length > 0">
         <ng-template ngbSlide *ngFor="let item of post?.attachments?.collection?.elements">
           <div class="picsum-img-wrapper" style="z-index: 0; text-align: center;">
-            <img [src]="'http://192.168.100.12:8000/' + item.fileName" class="img-fluid"
+            <img [src]="this.sharedService.url + '/' + item.fileName" class="img-fluid" style="max-height: 350px;"
               *ngIf="item.fileName.indexOf('mp4') === -1" alt="2">
-            <video controls *ngIf="item.fileName.indexOf('mp4') !== -1" class="img-fluid">
-              <source [src]="'http://192.168.100.12:8000/' + item.fileName" type="video/mp4">
+            <video controls *ngIf="item.fileName.indexOf('mp4') !== -1" class="img-fluid" preload="metadata" style="max-height: 350px;">
+              <source [src]="this.sharedService.url + '/' + item.fileName + '#t=1'" type="video/mp4">
             </video>
           </div>
         </ng-template>

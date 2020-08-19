@@ -16,8 +16,8 @@
   </mat-card-content>
   <mat-card-actions>
     <button mat-raised-button class="full-width" color="primary" (click)="login()">
-      <span *ngIf="!loading">Login</span>
-      <span *ngIf="loading">
+      <span *ngIf="!isLoading">Login</span>
+      <span *ngIf="isLoading">
         <mat-spinner style="margin: auto;" [diameter]="30" color="warn">
         </mat-spinner>
       </span>

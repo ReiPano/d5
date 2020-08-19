@@ -5,11 +5,14 @@
 </mat-toolbar>
 <mat-sidenav-container class="example-container" [hasBackdrop]="isMobile">
   <mat-sidenav #drawer [mode]="isMobile ? 'over' : 'side'" style="width: 300px;" [disableClose]="!isMobile" [opened]="isUserAuthenticated && !isMobile">
-    <app-user-sidenav [user]="user" (navigationStarted)="onNavigationStarted()"></app-user-sidenav>
+    <app-user-sidenav [user]="user" (navigationStarted)="onNavigationStarted($event)"></app-user-sidenav>
   </mat-sidenav>
   <mat-sidenav-content>
-    <div style="z-index: 2;" *ngIf="!loading">
+    <div style="z-index: 2;" *ngIf="!isLoading">
       <router-outlet></router-outlet>
     </div>
+    <ng-container *ngIf="isLoading">
+      <mat-spinner style="margin: 30px auto;"></mat-spinner>
+    </ng-container>
   </mat-sidenav-content>
 </mat-sidenav-container>

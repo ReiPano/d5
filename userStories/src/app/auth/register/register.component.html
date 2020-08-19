@@ -46,7 +46,13 @@
     </form>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-raised-button color="primary" [disabled]="registerFormGroup.invalid" (click)="regiserUser()">Register</button>
+    <button mat-raised-button color="primary" style="height: 36px; vertical-align: bottom;" [disabled]="registerFormGroup.invalid" (click)="regiserUser()">
+      <span *ngIf="!isLoading">Register</span>
+      <span *ngIf="isLoading">
+        <mat-spinner style="margin: auto;" [diameter]="30" color="warn">
+        </mat-spinner>
+      </span>
+    </button>
     <button mat-raised-button (click)="goToLogin()">Cancel</button>
   </mat-card-actions>
 </mat-card>

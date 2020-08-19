@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Inject } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { SharedService } from 'src/app/shared/shared.service';
 
 @Component({
   selector: 'app-post-full',
@@ -11,7 +12,7 @@ export class PostFullComponent implements OnInit {
 
   post;
   profileIcon;
-  constructor(private sanitization: DomSanitizer, @Inject(MAT_DIALOG_DATA) public data) { }
+  constructor(private sanitization: DomSanitizer, @Inject(MAT_DIALOG_DATA) public data, public sharedService: SharedService,) { }
 
   ngOnInit() {
     this.post = this.data.post;

@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { SharedService } from 'src/app/shared/shared.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 
@@ -13,22 +11,20 @@ export class LoginComponent implements OnInit {
 
   username = '';
   password = '';
-  loading: boolean;
+  isLoading: boolean;
 
   constructor(
-    private sharedService: SharedService,
-    private snackBar: MatSnackBar,
     private router: Router,
     private authService: AuthService) { }
 
   ngOnInit() {
     this.authService.userAuthenticatedObserver.subscribe(response => {
-      this.loading = false;
+      this.isLoading = false;
     });
   }
 
   public login() {
-    this.loading = true;
+    this.isLoading = true;
     this.authService.loginUser(this.username, this.password, false);
   }
 

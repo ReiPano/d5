@@ -1,9 +1,10 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, isDevMode } from '@angular/core';
 import { AuthService } from 'src/app/auth/auth.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { MatSelectionList } from '@angular/material/list';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { SharedService } from 'src/app/shared/shared.service';
 
 @Component({
   selector: 'app-user-sidenav',
@@ -34,7 +35,7 @@ export class UserSidenavComponent implements OnInit {
     private sanitization: DomSanitizer,
     private authService: AuthService,
     private router: Router,
-    private activatedRoute: ActivatedRoute,
+    private sharedService: SharedService,
     private snackBar: MatSnackBar) { }
 
   ngOnInit() {
@@ -48,10 +49,24 @@ export class UserSidenavComponent implements OnInit {
   }
 
   public logOut() {
-    this.authService.logoutUser();
-    if (this.optionList) {
-      this.optionList.deselectAll();
-    }
+    const formData = new FormData();
+    formData.append('username', this.loggedinUser?.username);
+    this.sharedService.post(this.sharedService.url + '/auth/logout', formData).subscribe(response => {
+      if (isDevMode()) { console.log('Logout response', response); }
+      if (response.success) {
+        this.authService.logoutUser();
+        if (this.optionList) {
+          this.optionList.deselectAll();
+        }
+        this.navigationStarted.emit(false);
+        this.loggedinUser = null;
+      }
+      else {
+        this.snackBar.open(response.message, 'Ok', {
+          duration: 2000
+        });
+      }
+    });
   }
 
   public goToAddPost() {

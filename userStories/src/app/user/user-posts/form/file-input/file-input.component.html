@@ -1,5 +1,5 @@
 
-<div class="container" appDnd (fileDropped)="onFileDropped($event)" *ngIf="!isView">
+<div class="container" style="max-width: 100%;" appDnd (fileDropped)="onFileDropped($event)" *ngIf="!isView">
   <input type="file" #fileDropRef id="fileDropRef" [multiple]="multiple" (change)="fileBrowseHandler($event.target.files)" />
   <img src="assets/img/dnd/ic-upload-file.svg" alt="">
   <h3>Drag and drop file here</h3>

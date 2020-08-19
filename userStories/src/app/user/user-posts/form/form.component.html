@@ -21,11 +21,15 @@
           </mat-error>
         </mat-form-field>
         <app-file-input [multiple]="true" (fileDone)="onFileDone($event)" (deleteFile)="onDeleteFile($event)"></app-file-input>
-        <!-- <input type="file" name="attachments" id="attachments" #attachments hidden> -->
       </form>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-button color="primary" (click)="addStory()">Add</button>
+      <button mat-button color="primary" [disabled]="newPostFormGroup.invalid" (click)="addStory()">
+        <span *ngIf="!isLoading">Add</span>
+        <span *ngIf="isLoading">
+          <mat-spinner style="margin: auto;" [diameter]="30" color="warn"></mat-spinner>
+        </span>
+      </button>
       <button mat-button color="warn">Cancel</button>
     </mat-card-actions>
   </mat-card>

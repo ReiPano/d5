@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { SharedService } from 'src/app/shared/shared.service';
 import { AuthService } from 'src/app/auth/auth.service';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-form',
@@ -16,14 +17,18 @@ export class FormComponent implements OnInit {
 
   @ViewChild('registerForm') registerForm: ElementRef;
   @ViewChild('attachments') attachments: ElementRef;
+  isLoading: boolean;
 
-  constructor(private sharedService: SharedService, private authService: AuthService, private router: Router) { }
+  constructor(
+    private sharedService: SharedService,
+    private authService: AuthService,
+    private router: Router,
+    private snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.newPostFormGroup = new FormGroup({
       title: new FormControl('', Validators.required),
-      content: new FormControl('', Validators.required),
-      attachments: new FormControl('', Validators.required)
+      content: new FormControl('', Validators.required)
     });
   }
 
@@ -33,7 +38,6 @@ export class FormComponent implements OnInit {
       for (const selectedFile of selectedFiles) {
         this.files.push(selectedFile);
       }
-      this.addOrRemoveFilesToInput();
     }
   }
 
@@ -43,26 +47,26 @@ export class FormComponent implements OnInit {
     if (index !== -1) {
       this.files.splice(index, 1);
     }
-    this.addOrRemoveFilesToInput();
-  }
-
-  private addOrRemoveFilesToInput() {
-    // this.attachmets.nativeElement.files = this.files;
   }
 
   public addStory() {
-    console.log(this.newPostFormGroup);
+    if (isDevMode()) { console.log(this.newPostFormGroup); }
     const formData = new FormData(this.registerForm.nativeElement);
     for (const file of this.files) {
       formData.append('attachments[]', file, file.fileName);
     }
     formData.append('username', this.authService.username);
-    this.sharedService.post('http://192.168.100.12:8000/posts/add-story', formData).subscribe(response => {
-      if (isDevMode()) { console.log('Added post response: ', response); }
+    formData.append('token', this.authService.token);
+    this.isLoading = true;
+    this.sharedService.post(this.sharedService.url + '/posts/add-story', formData).subscribe(response => {
+      if (isDevMode()) { console.log('Added story response: ', response); }
+      this.isLoading = false;
       if (response.success) {
         this.router.navigateByUrl('posts');
       } else {
-
+        this.snackBar.open(response.message, 'Ok', {
+          duration: 2000
+        });
       }
     });
   }

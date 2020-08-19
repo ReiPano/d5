@@ -19,7 +19,7 @@ export class AuthService {
     const formData = new FormData();
     formData.append('username', username);
     formData.append('password', password);
-    this.sharedService.post('http://192.168.100.12:8000/auth/login', formData).subscribe(response => {
+    this.sharedService.post(this.sharedService.url + '/auth/login', formData).subscribe(response => {
       if (isDevMode()) { console.log('Login', response); }
       if (response.success) {
         if (rememberMe) {
@@ -38,6 +38,7 @@ export class AuthService {
         this.snackBar.open(response.message, 'Ok', {
           duration: 3300
         });
+        this.userAuthenticatedObserver.next(false);
       }
     });
   }
@@ -70,7 +71,7 @@ export class AuthService {
   }
 
   public updateUser(user) {
-    this.sharedService.post('http://192.168.100.12:8000/auth/update-user', user).subscribe(response => {
+    this.sharedService.post(this.sharedService.url + '/auth/update-user', user).subscribe(response => {
       if (isDevMode()) { console.log('Update user', response); }
       if (response.success) {
         this.user = response.result;
@@ -84,7 +85,7 @@ export class AuthService {
   }
 
   public authenticateUser(formData: FormData) {
-    return this.sharedService.post('http://192.168.100.12:8000/auth/token-authentication', formData);
+    return this.sharedService.post(this.sharedService.url + '/auth/token-authentication', formData);
   }
 
   public setAuthenticated(success) {

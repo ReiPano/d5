@@ -6,6 +6,8 @@ import { positionService } from '@ng-bootstrap/ng-bootstrap/util/positioning';
 import { UserPostService } from '../user-post.service';
 import { AuthService } from 'src/app/auth/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { SharedService } from 'src/app/shared/shared.service';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
   selector: 'app-post',
@@ -21,15 +23,21 @@ export class PostComponent implements OnInit {
   @ViewChild('deleteModal') deleteModalTemplate: TemplateRef<any>;
 
   profileIcon: any;
+  isDeleting: boolean;
+  isMobile: any;
   constructor(
     private sanitization: DomSanitizer,
     public dialog: MatDialog,
+    public sharedService: SharedService,
     private postService: UserPostService,
     private authService: AuthService,
-    private snackBar: MatSnackBar) { }
+    private snackBar: MatSnackBar,
+    private deviceService: DeviceDetectorService,
+    ) { }
 
   ngOnInit() {
     this.profileIcon = this.sanitization.bypassSecurityTrustStyle(`url(${this.post.user.profilePicture})`);
+    this.isMobile = this.deviceService.isMobile();
   }
 
   public getContent() {
@@ -43,7 +51,9 @@ export class PostComponent implements OnInit {
     formData.append('username', this.authService.username);
     formData.append('token', this.authService.token);
     formData.append('storyId', this.post.id);
+    this.isDeleting = true;
     this.postService.deletePost(formData).subscribe(response => {
+      this.isDeleting = false;
       if (isDevMode()) { console.log('Delete post: ', response); }
       if (response.success) {
         this.deleted.next(this.post.id);
@@ -68,7 +78,7 @@ export class PostComponent implements OnInit {
     const dialogRef = this.dialog.open(
       PostFullComponent,
       {
-        minWidth: '85%',
+        minWidth: this.isMobile ? '100%' : '20%',
         data: {
           post
         }

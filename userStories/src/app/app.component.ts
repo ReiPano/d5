@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from './auth/auth.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { SharedService } from './shared/shared.service';
+import { MatDrawer } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-root',
@@ -16,11 +17,17 @@ export class AppComponent implements OnInit {
   isMobile: boolean;
   isTablet: boolean;
   isDesktopDevice: boolean;
-  loading: boolean;
+  isLoading: boolean;
   currentUrl: any;
   opened: any;
 
-  constructor(private authService: AuthService, private router: Router, private deviceService: DeviceDetectorService, private sharedService: SharedService) {
+  @ViewChild('drawer') drawer: MatDrawer;
+
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private deviceService: DeviceDetectorService,
+    private sharedService: SharedService) {
   }
 
   ngOnInit(): void {
@@ -29,7 +36,7 @@ export class AppComponent implements OnInit {
       userAuthenticatedResponse ?
         this.navigate() :
         this.router.navigateByUrl('login');
-      this.loading = false;
+      this.isLoading = false;
     });
 
     if (!!sessionStorage.getItem('username') && !!sessionStorage.getItem('token')) {
@@ -50,8 +57,11 @@ export class AppComponent implements OnInit {
     this.user = this.authService.user;
   }
 
-  public onNavigationStarted() {
-    this.loading = true;
+  public onNavigationStarted(isLoading) {
+    this.isLoading = isLoading;
+    if (this.isMobile) {
+      this.drawer.close();
+    }
   }
 
   setDrawerStatus(drawer) {

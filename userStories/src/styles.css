@@ -185,3 +185,10 @@ a {
 .carousel-dots {
   background: lightgray;
 }
+
+.carousel-control-prev, .carousel-control-next {
+  height: 40px;
+  width: 40px;
+  top: 45%;
+  background: lightgray;
+}

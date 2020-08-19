@@ -11,17 +11,23 @@
     <ngb-carousel [interval]="false" *ngIf="post?.attachments?.collection?.elements?.length > 0">
       <ng-template ngbSlide *ngFor="let item of post?.attachments?.collection?.elements">
         <div class="picsum-img-wrapper" style="z-index: 0; text-align: center;">
-          <img [src]="'http://192.168.100.12:8000/' + item.fileName" class="img-fluid" *ngIf="item.fileName.indexOf('mp4') === -1" alt="2">
-          <video controls *ngIf="item.fileName.indexOf('mp4') !== -1" class="img-fluid">
-            <source [src]="'http://192.168.100.12:8000/' + item.fileName" type="video/mp4">
+          <img [src]="this.sharedService.url + '/' + item.fileName" class="img-fluid" style="max-height: 350px;" *ngIf="item.fileName.indexOf('mp4') === -1" alt="2">
+          <video controls *ngIf="item.fileName.indexOf('mp4') !== -1" class="img-fluid" preload="metadata" style="max-height: 350px;">
+            <source [src]="this.sharedService.url + '/' + item.fileName + '#t=1'" type="video/mp4">
           </video>
         </div>
       </ng-template>
     </ngb-carousel>
   </mat-card-content>
   <mat-card-actions style="text-align: right;">
-    <button mat-button color="warn" (click)="openDeleteDialog()" *ngIf="allowDelete">Delete</button>
-    <button mat-button color="primary" (click)="openFullPost(post)">More</button>
+    <button mat-button color="warn" (click)="openDeleteDialog()" *ngIf="allowDelete">
+      <span *ngIf="!isDeleting">Delete</span>
+      <span *ngIf="isDeleting">
+        <mat-spinner style="margin: auto;" [diameter]="30" color="warn">
+        </mat-spinner>
+      </span>
+    </button>
+    <button mat-button color="primary" (click)="openFullPost(post)">View</button>
   </mat-card-actions>
 </mat-card>
 

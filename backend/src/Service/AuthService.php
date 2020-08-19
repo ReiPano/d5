@@ -20,7 +20,7 @@ class AuthService
                     $dateUpdated = $user->getDateUpdated();
                     $timeNow = new \DateTime();
                     $diff = $dateUpdated->diff($timeNow);
-                    if (is_null($dateUpdated) || ($diff && $diff->i < 30)) {
+                    if (is_null($dateUpdated) || ($diff && $diff->h < 10)) {
                         $result = new ServiceResponse(true, $user, "Success");
                     }
                     else {
