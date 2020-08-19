@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class PostsController extends AbstractController
+class StoryController extends AbstractController
 {
     /**
      * @Route("/posts/get-stories-for-user")
@@ -31,8 +31,8 @@ class PostsController extends AbstractController
      */
     public function getStoriesForUser(Request $request, SerializerService $serializerService, AuthService $authService) {
         $result = null;
-        $username = $request->query->get('username');
-        $token = $request->query->get('token');
+        $username = $request->query->get("username");
+        $token = $request->query->get("token");
 
         $authResult = $authService->authenticateUserByUsernameAndToken($username, $token, $this->getDoctrine());
         if ($authResult->getSuccess()) {
@@ -50,7 +50,7 @@ class PostsController extends AbstractController
                 $result = new ServiceResponse(true, $jsonUserStories, "Success");
             }
             else {
-                $result = new ServiceResponse(false, null, "User not found");
+                $result = new ServiceResponse(false, null, "Error! User not found");
             }
         }
         else {
@@ -71,8 +71,8 @@ class PostsController extends AbstractController
      */
     public function getOtherUserStories(Request $request, SerializerService $serializerService, AuthService $authService) {
         $result = null;
-        $username = $request->query->get('username');
-        $token = $request->query->get('token');
+        $username = $request->query->get("username");
+        $token = $request->query->get("token");
 
         $authResult = $authService->authenticateUserByUsernameAndToken($username, $token, $this->getDoctrine());
         if ($authResult->getSuccess()) {
@@ -100,7 +100,7 @@ class PostsController extends AbstractController
                 $result = new ServiceResponse(true, $jsonOtherStories, "Success");
             }
             else {
-                $result = new ServiceResponse(false, null, "User not found");
+                $result = new ServiceResponse(false, null, "Error! User not found");
             }
         }
         else {
@@ -143,7 +143,7 @@ class PostsController extends AbstractController
                 }
                 else {
                     $storyAttachment = new Attachment();
-                    $storyAttachment->setFileName('uploads/'. $user->getId() . '/' .$uploadResult);
+                    $storyAttachment->setFileName("uploads/". $user->getId() . "/" .$uploadResult);
                     $storyAttachment->setDateCreated(date_create());
                     $storyAttachment->setDeleted(false);
                     array_push($storyAttachments, $storyAttachment);
@@ -188,9 +188,9 @@ class PostsController extends AbstractController
     public function deleteStory(Request $request, SerializerService $serializerService, FileUploadService $fileUploadService, AuthService $authService)
     {
         $result = null;
-        $username = $request->request->get('username');
-        $token = $request->request->get('token');
-        $storyId = $request->request->get('storyId');
+        $username = $request->request->get("username");
+        $token = $request->request->get("token");
+        $storyId = $request->request->get("storyId");
 
         $authResult = $authService->authenticateUserByUsernameAndToken($username, $token, $this->getDoctrine());
         if ($authResult->getSuccess()) {
@@ -201,7 +201,7 @@ class PostsController extends AbstractController
             if (!is_null($story) && !is_null($user)) {
                 foreach ($story->getAttachments()->getValues() as $attachment) {
                     if ($attachment instanceof Attachment) {
-                        $fileLocation = $this->getParameter('public_directory') . $attachment->getFileName();
+                        $fileLocation = $this->getParameter("public_directory") . $attachment->getFileName();
                         unlink($fileLocation);
                     }
                 }
@@ -210,11 +210,11 @@ class PostsController extends AbstractController
                 $result = new ServiceResponse(true, null, "Success");
             }
             else {
-                $result = new ServiceResponse(false, null, " Error!. Story could not be found");
+                $result = new ServiceResponse(false, null, "Error!. Story could not be found");
             }
         }
         else {
-            $result = new ServiceResponse(false, null, " Error!. Token is not valid");
+            $result = new ServiceResponse(false, null, "Error!. Token is not valid");
         }
 
         $response = new Response();
