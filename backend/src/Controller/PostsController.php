@@ -195,8 +195,16 @@ class PostsController extends AbstractController
         $authResult = $authService->authenticateUserByUsernameAndToken($username, $token, $this->getDoctrine());
         if ($authResult->getSuccess()) {
             $storyRepository = new StoryRepository($this->getDoctrine());
+            $userRepository = new UserRepository($this->getDoctrine());
+            $user = $userRepository->findOneBy(array("username"=>$username));
             $story = $storyRepository->find($storyId);
-            if (!is_null($story)) {
+            if (!is_null($story) && !is_null($user)) {
+                foreach ($story->getAttachments()->getValues() as $attachment) {
+                    if ($attachment instanceof Attachment) {
+                        $fileLocation = $this->getParameter('public_directory') . $attachment->getFileName();
+                        unlink($fileLocation);
+                    }
+                }
                 $this->getDoctrine()->getManager()->remove($story);
                 $this->getDoctrine()->getManager()->flush();
                 $result = new ServiceResponse(true, null, "Success");
