@@ -57,7 +57,7 @@ export class FormComponent implements OnInit {
       formData.append('attachments[]', file, file.fileName);
     }
     formData.append('username', this.authService.username);
-    this.sharedService.post('https://localhost:8000/posts/add-post', formData).subscribe(response => {
+    this.sharedService.post('http://192.168.100.12:8000/posts/add-story', formData).subscribe(response => {
       if (isDevMode()) { console.log('Added post response: ', response); }
       if (response.success) {
         this.router.navigateByUrl('posts');

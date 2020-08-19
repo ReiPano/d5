@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from './auth/auth.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { SharedService } from './shared/shared.service';
 
 @Component({
   selector: 'app-root',
@@ -17,8 +18,9 @@ export class AppComponent implements OnInit {
   isDesktopDevice: boolean;
   loading: boolean;
   currentUrl: any;
+  opened: any;
 
-  constructor(private authService: AuthService, private router: Router, private deviceService: DeviceDetectorService) {
+  constructor(private authService: AuthService, private router: Router, private deviceService: DeviceDetectorService, private sharedService: SharedService) {
   }
 
   ngOnInit(): void {
@@ -50,5 +52,11 @@ export class AppComponent implements OnInit {
 
   public onNavigationStarted() {
     this.loading = true;
+  }
+
+  setDrawerStatus(drawer) {
+    console.log(drawer.opened);
+    this.opened = drawer.opened;
+    this.sharedService.setDrawerStatus(drawer.opened);
   }
 }

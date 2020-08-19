@@ -13,6 +13,7 @@ export class LoginComponent implements OnInit {
 
   username = '';
   password = '';
+  loading: boolean;
 
   constructor(
     private sharedService: SharedService,
@@ -21,9 +22,13 @@ export class LoginComponent implements OnInit {
     private authService: AuthService) { }
 
   ngOnInit() {
+    this.authService.userAuthenticatedObserver.subscribe(response => {
+      this.loading = false;
+    });
   }
 
   public login() {
+    this.loading = true;
     this.authService.loginUser(this.username, this.password, false);
   }
 

@@ -9,6 +9,7 @@ import { SharedModule } from './shared/shared.module';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import { UserModule } from './user/user.module';
 import { DeviceDetectorModule } from 'ngx-device-detector';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { DeviceDetectorModule } from 'ngx-device-detector';
     SharedModule,
     MatSidenavModule,
     UserModule,
-    DeviceDetectorModule
+    DeviceDetectorModule,
+    NgbModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

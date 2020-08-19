@@ -51,7 +51,7 @@ class Story
     private $user;
 
     /**
-     * @ORM\OneToMany(targetEntity=Attachment::class, mappedBy="story")
+     * @ORM\OneToMany(targetEntity=Attachment::class, mappedBy="story", cascade={"remove"})
      */
     private $attachments;
 

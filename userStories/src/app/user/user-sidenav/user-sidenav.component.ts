@@ -1,8 +1,9 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { AuthService } from 'src/app/auth/auth.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { MatSelectionList } from '@angular/material/list';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-user-sidenav',
@@ -14,6 +15,8 @@ export class UserSidenavComponent implements OnInit {
   profileImg: any;
   backgroundImg: any;
   currentUrl: string;
+  profilePictureBase64: string | ArrayBuffer;
+  backgroundImageBase64: string | ArrayBuffer;
   @Input() set user(user) {
     if (user) {
       this.loggedinUser = user;
@@ -24,12 +27,15 @@ export class UserSidenavComponent implements OnInit {
 
   @Output() navigationStarted = new EventEmitter<boolean>();
   @ViewChild('options') optionList: MatSelectionList;
+  @ViewChild('profilePicture') profilePicture: ElementRef;
+  @ViewChild('backgroundImage') backgroundImage: ElementRef;
 
   constructor(
     private sanitization: DomSanitizer,
     private authService: AuthService,
     private router: Router,
-    private activatedRoute: ActivatedRoute) { }
+    private activatedRoute: ActivatedRoute,
+    private snackBar: MatSnackBar) { }
 
   ngOnInit() {
 
@@ -48,7 +54,7 @@ export class UserSidenavComponent implements OnInit {
     }
   }
 
-  public addPost() {
+  public goToAddPost() {
     this.router.navigateByUrl('post-form');
     this.navigationStarted.emit(true);
   }
@@ -61,5 +67,41 @@ export class UserSidenavComponent implements OnInit {
   public goToProfile() {
     this.router.navigateByUrl('profile');
     this.navigationStarted.emit(true);
+  }
+
+  public openProfilePictureInput() {
+    this.profilePicture.nativeElement.click();
+  }
+
+  public openBackgroundImageInput() {
+    this.backgroundImage.nativeElement.click();
+  }
+
+  getBase64(file, type) {
+    if (this.isImage(file)) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      // return reader.result;
+      reader.onload = () => {
+          type === 1 ?
+            this.loggedinUser.profilePicture = reader.result :
+            this.loggedinUser.backgroundImage = reader.result;
+          const formData = new FormData();
+          formData.append('username', this.loggedinUser.username);
+          formData.append('profilePicture', this.loggedinUser.profilePicture);
+          formData.append('backgroundImage', this.loggedinUser.backgroundImage);
+          this.authService.updateUser(formData);
+      };
+      reader.onerror = (error) => {
+      };
+    } else {
+      this.snackBar.open('The selected file was not an image.', 'Ok', {
+        duration: 2000
+      });
+    }
+  }
+
+  isImage(file) {
+    return ['image/gif', 'image/jpeg', 'image/png'].includes(file.type);
   }
 }

@@ -23,13 +23,13 @@ use Symfony\Component\Routing\Annotation\Route;
 class PostsController extends AbstractController
 {
     /**
-     * @Route("/posts/get-posts-for-user")
+     * @Route("/posts/get-stories-for-user")
      * @param Request $request
      * @param SerializerService $serializerService
      * @param AuthService $authService
      * @return Response
      */
-    public function getPostsForUser(Request $request, SerializerService $serializerService, AuthService $authService) {
+    public function getStoriesForUser(Request $request, SerializerService $serializerService, AuthService $authService) {
         $result = null;
         $username = $request->query->get('username');
         $token = $request->query->get('token');
@@ -63,13 +63,13 @@ class PostsController extends AbstractController
     }
 
     /**
-     * @Route("/posts/get-other-posts")
+     * @Route("/posts/get-other-stories")
      * @param Request $request
      * @param SerializerService $serializerService
      * @param AuthService $authService
      * @return Response
      */
-    public function getOtherUserPosts(Request $request, SerializerService $serializerService, AuthService $authService) {
+    public function getOtherUserStories(Request $request, SerializerService $serializerService, AuthService $authService) {
         $result = null;
         $username = $request->query->get('username');
         $token = $request->query->get('token');
@@ -113,13 +113,13 @@ class PostsController extends AbstractController
     }
 
     /**
-     * @Route("/posts/add-post")
+     * @Route("/posts/add-story")
      * @param Request $request
      * @param SerializerService $serializerService
      * @param FileUploadService $fileUploadService
      * @return Response
      */
-    public function addNewPost(Request $request, SerializerService $serializerService, FileUploadService $fileUploadService) {
+    public function addNewStory(Request $request, SerializerService $serializerService, FileUploadService $fileUploadService) {
         $result = null;
 
         $attachments = $request->files->get('attachments');
@@ -170,6 +170,43 @@ class PostsController extends AbstractController
         }
         else {
             $result = new ServiceResponse(false, null, "Error! User not found.");
+        }
+
+        $response = new Response();
+        $response->setContent($serializerService->jsonSerialize($result));
+        return $response;
+    }
+
+    /**
+     * @Route("/posts/delete-story")
+     * @param Request $request
+     * @param SerializerService $serializerService
+     * @param FileUploadService $fileUploadService
+     * @param AuthService $authService
+     * @return Response
+     */
+    public function deleteStory(Request $request, SerializerService $serializerService, FileUploadService $fileUploadService, AuthService $authService)
+    {
+        $result = null;
+        $username = $request->request->get('username');
+        $token = $request->request->get('token');
+        $storyId = $request->request->get('storyId');
+
+        $authResult = $authService->authenticateUserByUsernameAndToken($username, $token, $this->getDoctrine());
+        if ($authResult->getSuccess()) {
+            $storyRepository = new StoryRepository($this->getDoctrine());
+            $story = $storyRepository->find($storyId);
+            if (!is_null($story)) {
+                $this->getDoctrine()->getManager()->remove($story);
+                $this->getDoctrine()->getManager()->flush();
+                $result = new ServiceResponse(true, null, "Success");
+            }
+            else {
+                $result = new ServiceResponse(false, null, " Error!. Story could not be found");
+            }
+        }
+        else {
+            $result = new ServiceResponse(false, null, " Error!. Token is not valid");
         }
 
         $response = new Response();

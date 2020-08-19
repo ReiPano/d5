@@ -35,7 +35,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
     MatSnackBarModule,
     MatFormFieldModule,
     MatProgressSpinnerModule,
-    MatDatepickerModule
+    MatDatepickerModule,
   ],
   exports: [
     MatCardModule,
@@ -51,7 +51,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
     MatSnackBarModule,
     MatFormFieldModule,
     MatProgressSpinnerModule,
-    MatDatepickerModule
+    MatDatepickerModule,
   ]
 })
 export class SharedModule { }

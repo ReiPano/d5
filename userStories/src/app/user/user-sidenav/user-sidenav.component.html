@@ -1,15 +1,23 @@
 <div class="img bg-wrap text-center py-4" [style.background-image]="backgroundImg" *ngIf="loggedinUser">
-  <div class="user-logo">
+  <div class="user-logo" style="height: 160px;">
     <div class="img" [style.background-image]="profileImg"></div>
     <h3>{{ loggedinUser.username }}</h3>
-    <button mat-raised-button (click)="goToProfile()">Profile</button>
+    <button mat-icon-button class="profile-img-edit-button" (click)="openProfilePictureInput()">
+      <mat-icon>edit</mat-icon>
+    </button>
+    <!-- <button mat-raised-button (click)="goToProfile()">Profile</button> -->
   </div>
+  <button mat-icon-button class="cover-img-edit-button" (click)="openBackgroundImageInput()">
+    <mat-icon>edit</mat-icon>
+  </button>
+  <input #profilePicture type="file" name="profilePicture" id="profilePicture" (change)="getBase64($event.target.files[0], 1)" hidden>
+  <input #backgroundImage type="file" name="backgroundImage" id="backgroundImage" (change)="getBase64($event.target.files[0], 2)" hidden>
 </div>
 <mat-selection-list #options [multiple]="false">
   <mat-list-option [selected]="currentUrl === '/posts'" (click)="goToPosts()">
     <mat-icon mat-list-icon>home</mat-icon> Home
   </mat-list-option>
-  <mat-list-option [selected]="currentUrl === '/post-form'" (click)="addPost()">
+  <mat-list-option [selected]="currentUrl === '/post-form'" (click)="goToAddPost()">
     <mat-icon mat-list-icon>add_circle</mat-icon>
     New post
   </mat-list-option>

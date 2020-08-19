@@ -1,17 +1,4 @@
-<mat-tab-group mat-align-tabs="center">
-  <mat-tab label="User posts">
-    <ng-container *ngIf="!areUserPostsLoading; else userPostsLoader">
-      <div class="container" *ngIf="userPosts && userPosts.length > 0; else emptyMessage">
-        <app-post *ngFor="let post of userPosts" [post]="post"></app-post>
-      </div>
-    </ng-container>
-    <ng-template #userPostsLoader>
-      <div>
-        <mat-spinner style="margin: 90px auto;"></mat-spinner>
-      </div>
-    </ng-template>
-
-  </mat-tab>
+<mat-tab-group #matTabGroup mat-align-tabs="center" [animationDuration]="200" [class.drawer-opened]="drawerStatus">
   <mat-tab label="All posts">
     <ng-container *ngIf="!areAllPostsLoading; else allPostsLoader">
       <div class="container" *ngIf="allPosts && allPosts.length > 0; else emptyMessage">
@@ -24,9 +11,19 @@
       </div>
     </ng-template>
   </mat-tab>
+  <mat-tab [label]="username + '\'s posts'">
+    <ng-container *ngIf="!areUserPostsLoading; else userPostsLoader">
+      <div class="container" *ngIf="userPosts && userPosts.length > 0; else emptyMessage">
+        <app-post *ngFor="let post of userPosts" [post]="post" [allowDelete]="true" (deleted)="onDeleted($event)"></app-post>
+      </div>
+    </ng-container>
+    <ng-template #userPostsLoader>
+      <div>
+        <mat-spinner style="margin: 90px auto;"></mat-spinner>
+      </div>
+    </ng-template>
+  </mat-tab>
 </mat-tab-group>
-
-
 <ng-template #emptyMessage>
   <p style="text-align: center; margin-top: 20px;">No sotries to display</p>
 </ng-template>

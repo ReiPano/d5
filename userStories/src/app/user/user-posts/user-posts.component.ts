@@ -1,8 +1,12 @@
-import { Component, OnInit, isDevMode } from '@angular/core';
+import { Component, OnInit, isDevMode, ViewChild } from '@angular/core';
 import { UserPostService } from './user-post.service';
 import { AuthService } from 'src/app/auth/auth.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDrawer } from '@angular/material/sidenav';
+import { SharedService } from 'src/app/shared/shared.service';
+import { MatTabGroup } from '@angular/material/tabs';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
   selector: 'app-user-posts',
@@ -16,12 +20,32 @@ export class UserPostsComponent implements OnInit {
   allPosts: any[] = [];
   areAllPostsLoading: boolean;
   contentWidth: number;
+  drawerStatus = true;
+  @ViewChild('matTabGroup') matTabGroup: MatTabGroup;
+  isMobile: any;
+  username: string;
 
-  constructor(private userPostService: UserPostService, private snackBar: MatSnackBar) { }
+  constructor(
+    private userPostService: UserPostService,
+    private snackBar: MatSnackBar,
+    private sharedService: SharedService,
+    private authService: AuthService,
+    private deviceService: DeviceDetectorService) { }
 
   ngOnInit() {
     this.getUserPosts();
     this.getAllPosts();
+
+    this.sharedService.drawerStatus.subscribe(status => {
+      this.drawerStatus = status && !this.isMobile;
+      this.matTabGroup.realignInkBar();
+    });
+
+    this.username = this.authService.username;
+    this.isMobile = this.deviceService.isMobile();
+    if (this.isMobile) {
+      this.drawerStatus = false;
+    }
   }
 
   private getUserPosts() {
@@ -58,4 +82,10 @@ export class UserPostsComponent implements OnInit {
     });
   }
 
+  public onDeleted(id) {
+    const index = this.userPosts.findIndex(o => o.id === id);
+    if (index !== -1) {
+      this.userPosts.splice(index, 1);
+    }
+  }
 }

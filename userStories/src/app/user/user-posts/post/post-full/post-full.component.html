@@ -3,18 +3,23 @@
     <div mat-card-avatar [style.background-image]="profileIcon" class="example-header-image"></div>
     <mat-card-title>{{ post.title }}</mat-card-title>
     <mat-card-subtitle>{{ post.user.username }}</mat-card-subtitle>
-    <button mat-icon-button [mat-dialog-close]="true" style="position: absolute; right: 0;"><mat-icon>close</mat-icon></button>
+    <button mat-icon-button [mat-dialog-close]="true" style="position: absolute; right: 0;">
+      <mat-icon>close</mat-icon>
+    </button>
   </mat-card-header>
   <mat-card-content>
     <mat-dialog-content cdkFocusInitial>
-      <carousel [cellWidth]="'100%'" height="376" [dots]="true" *ngIf="post?.attachments?.collection?.elements?.length > 0">
-        <div class="carousel-cell" *ngFor="let item of post?.attachments?.collection?.elements">
-          <img [src]="'https://localhost:8000/' + item.fileName" *ngIf="item.fileName.indexOf('mp4') === -1" alt="2">
-          <video controls *ngIf="item.fileName.indexOf('mp4') !== -1">
-            <source [src]="'https://localhost:8000/' + item.fileName" type="video/mp4">
-          </video>
-        </div>
-      </carousel>
+      <ngb-carousel [interval]="false" *ngIf="post?.attachments?.collection?.elements?.length > 0">
+        <ng-template ngbSlide *ngFor="let item of post?.attachments?.collection?.elements">
+          <div class="picsum-img-wrapper" style="z-index: 0; text-align: center;">
+            <img [src]="'http://192.168.100.12:8000/' + item.fileName" class="img-fluid"
+              *ngIf="item.fileName.indexOf('mp4') === -1" alt="2">
+            <video controls *ngIf="item.fileName.indexOf('mp4') !== -1" class="img-fluid">
+              <source [src]="'http://192.168.100.12:8000/' + item.fileName" type="video/mp4">
+            </video>
+          </div>
+        </ng-template>
+      </ngb-carousel>
       <p style="white-space: break-spaces; margin-top: 20px;">{{ post.content }}</p>
     </mat-dialog-content>
   </mat-card-content>

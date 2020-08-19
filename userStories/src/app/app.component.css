@@ -6,3 +6,10 @@
   right: 0;
   background: #eee;
 }
+
+@media (max-width: 500px) {
+  .example-container {
+    width: 100%;
+    top: 56px;
+  }
+}

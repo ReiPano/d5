@@ -15,9 +15,16 @@
     </form>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-raised-button class="full-width" color="primary" (click)="login()">Login</button>
+    <button mat-raised-button class="full-width" color="primary" (click)="login()">
+      <span *ngIf="!loading">Login</span>
+      <span *ngIf="loading">
+        <mat-spinner style="margin: auto;" [diameter]="30" color="warn">
+        </mat-spinner>
+      </span>
+    </button>
     <hr>
-    <button mat-button class="full-width" style="margin: 0px;" (click)="goToRegister()">Register</button>
-    <button mat-button class="full-width" style="margin: 0px;">Reset password</button>
+    <button mat-button class="full-width" style="margin: 0px;" (click)="goToRegister()">
+      <span>Register</span>
+    </button>
   </mat-card-actions>
 </mat-card>

@@ -10,13 +10,18 @@
 ::ng-deep .mat-tab-header {
   position: fixed !important;
   z-index: 2;
-  width: calc(100% - 300px);
+  width: 100%;
   top: 64px;
   background: white;
+}
+
+.drawer-opened > ::ng-deep .mat-tab-header {
+  width: calc(100% - 300px);
 }
 
 @media (max-width: 500px) {
   ::ng-deep .mat-tab-header {
     width: 100%;
+    top: 56px;
   }
 }

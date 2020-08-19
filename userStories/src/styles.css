@@ -181,3 +181,7 @@ a {
   text-decoration: none;
   background-color: transparent;
 }
+
+.carousel-dots {
+  background: lightgray;
+}

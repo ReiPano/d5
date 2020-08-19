@@ -13,3 +13,40 @@
       Every toolbar row uses a flexbox row layout. */
   flex: 1 1 auto;
 }
+
+.profile-img-edit-button {
+  position: relative;
+  color: white;
+  top: -154px;
+  /* right: -37px; */
+  width: 100px;
+  height: 100px;
+  visibility: hidden;
+}
+
+.profile-img-edit-button .mat-icon {
+  width: 100px;
+  height: 100px;
+  line-height: 100px;
+  font-size: 65px;
+}
+
+.user-logo:hover .profile-img-edit-button {
+  visibility: initial;;
+}
+
+.cover-img-edit-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: white;
+  visibility: hidden;
+}
+
+.bg-wrap:hover .cover-img-edit-button {
+  visibility: initial;
+}
+
+.edit-button {
+  visibility: hidden;
+}
