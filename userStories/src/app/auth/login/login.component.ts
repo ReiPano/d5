@@ -11,6 +11,7 @@ export class LoginComponent implements OnInit {
 
   username = '';
   password = '';
+  rememberMe = false;
   isLoading: boolean;
 
   constructor(
@@ -25,7 +26,7 @@ export class LoginComponent implements OnInit {
 
   public login() {
     this.isLoading = true;
-    this.authService.loginUser(this.username, this.password, false);
+    this.authService.loginUser(this.username, this.password, this.rememberMe);
   }
 
   public goToRegister() {
