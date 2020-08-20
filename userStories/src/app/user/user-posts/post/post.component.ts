@@ -78,7 +78,7 @@ export class PostComponent implements OnInit {
     const dialogRef = this.dialog.open(
       PostFullComponent,
       {
-        minWidth: this.isMobile ? '100%' : '20%',
+        minWidth: this.isMobile ? '100%' : '50%',
         data: {
           post
         }

@@ -18,6 +18,7 @@ speed-measure-plugin.json
 backend/.idea
 backend/var
 backend/vendor
+backend/public
 /.idea
 .project
 .classpath
